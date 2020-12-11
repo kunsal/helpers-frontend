@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import App from './App';
+import App from '../App';
 import { shallow } from 'enzyme';
-import Home from './components/Home';
+import Home from '../components/Home';
 
 it('renders App without crashing', () => {
   shallow(<App />)
