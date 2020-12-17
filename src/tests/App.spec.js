@@ -1,7 +1,8 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import App from '../App';
-import { HashRouter as Router, Switch, Route } from 'react-router-dom';
+import { HashRouter as Router, Switch } from 'react-router-dom';
+import LayoutRoute from '../components/layouts/LayoutRoute';
 
 describe('App component', () => {
   it('loads without error', () => {
@@ -21,6 +22,7 @@ describe('App component', () => {
   })
 
   it('should contain at least one Route component', () => {
-    expect(wrapper.find(Route).length).toBeGreaterThan(0);
+    //wrapper = mount(<App />);
+    expect(wrapper.find(LayoutRoute).length).toBeGreaterThan(0);
   })
 });
