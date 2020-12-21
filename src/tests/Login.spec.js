@@ -28,7 +28,7 @@ describe('Login page', () => {
   });
 
   it ('should contain a link to registration page', () => {
-    expect(wrapper.find('a#registration-link').text()).toBe('Already has an account? Login');
+    expect(wrapper.find('a#registration-link').text()).toBe('No account? Login');
   });
 
   it ('should contain a message div', () => {

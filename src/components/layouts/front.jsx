@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
+import AppNavbar from "../common/AppNavbar";
 
 class Front extends Component {
   
@@ -9,9 +10,7 @@ class Front extends Component {
 
     return (
       <main>
-        <Container>
-          
-        </Container>
+        <AppNavbar containerized/>
         {children}
       </main>
     );
