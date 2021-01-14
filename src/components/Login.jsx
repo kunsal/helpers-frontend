@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Row } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 
 class Login extends Component {
   state = {
@@ -15,9 +16,12 @@ class Login extends Component {
 
   handleLogin = () => {
     const { email, password } = this.state;
-    if (email === "") {
+    if (email == "") {
       this.setState({ hasError: true, message: "Email is required" });
-    } else {
+    } else if (password == "") {
+      this.setState({ hasError: true, message: "Password is required"})
+    } 
+    else {
       this.setState({ hasError: false, message: "" });
     }
   };
@@ -64,9 +68,9 @@ class Login extends Component {
             >
               Login
             </button>
-            <a href="#" id="registration-link">
+            <Link to="/register" id="registration-link">
               No account? Register
-            </a>
+            </Link>
           </div>
         </Row>
       </div>

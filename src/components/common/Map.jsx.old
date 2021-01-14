@@ -1,11 +1,12 @@
 import React from 'react';
 import { withGoogleMap, withScriptjs, GoogleMap, Marker } from 'react-google-maps';
 import { compose, withProps } from 'recompose';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 
 const Map = compose(
   withProps({
-    googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyCs8rvda2R2CEy9tVbhzimcNl9R8ec54mQ&v=3.exp&libraries=geometry,drawing",
+    googleMapURL: "https://maps.googleapis.com/maps/api/js?key=" + process.env.REACT_APP_MAP_KEY + "&v=3.exp&libraries=geometry,drawing",
     loadingElement: <div style={{ height: `100%` }} />,
     containerElement: <div style={{ height: `600px` }} />,
     mapElement: <div style={{ height: `100%` }} />,
@@ -13,7 +14,7 @@ const Map = compose(
   withScriptjs,
   withGoogleMap
 )(({coordinates, defaultLat, defaultLng, zoom}) => {
-  const history = useHistory();
+  const history = createBrowserHistory();
 
   const handleMarkerClick = (markerId) => {
     history.push('/help/' + markerId);

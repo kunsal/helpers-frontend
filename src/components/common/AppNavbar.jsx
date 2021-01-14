@@ -2,9 +2,10 @@ import React from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import { navigationLinks } from "./constants/navigation-links";
-import createHistory from 'history/createBrowserHistory';
+// import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory } from 'history';
 
-const history = createHistory();
+const history = createBrowserHistory();
 
 const AppNavbar = ({ containerized }) => {
   return (
