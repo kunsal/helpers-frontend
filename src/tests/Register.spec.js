@@ -39,12 +39,13 @@ describe ('Registration', () => {
 
     it ('should contain a password field', () => {
       expect(wrapper.find('label[htmlFor="password"]').text()).toBe('Password')
-      expect(wrapper.find('input[name="password"]').length).toEqual(1)
+      expect(wrapper.find('input[type="password"][name="password"]').length).toEqual(1)
     });
 
     it ('should contain a file field', () => {
       expect(wrapper.find('label[htmlFor="government_id"]').text()).toBe('Government Issued ID')
-      expect(wrapper.find('input[type="file"][name="government_id"]').length).toEqual(1)
+      expect(wrapper.find('input[type="file"]').length).toEqual(1)
+      expect(wrapper.find('.image-box').length).toEqual(1);
     });
 
     it ('should contain a button for submission', () => {
@@ -68,7 +69,7 @@ describe ('Registration', () => {
       expect(wrapper.find('.alert').text()).toContain('Last name is required');
     });
 
-    it ('should display error message if last name has no value when form is submitted', () => {
+    it ('should display error message if email has no value when form is submitted', () => {
       wrapper.find('input[name="firstName"]').simulate('change', {target: {name: 'firstName', value: 'Olakunle'}})
       wrapper.find('input[name="lastName"]').simulate('change', {target: {name: 'lastName', value: 'Salami'}})
       wrapper.find('button.submit').simulate('click');
@@ -76,7 +77,7 @@ describe ('Registration', () => {
       expect(wrapper.find('.alert').text()).toContain('Email is required');
     });
 
-    it ('should display error message if last name has no value when form is submitted', () => {
+    it ('should display error message if password has no value when form is submitted', () => {
       wrapper.find('input[name="firstName"]').simulate('change', {target: {name: 'firstName', value: 'Olakunle'}})
       wrapper.find('input[name="lastName"]').simulate('change', {target: {name: 'lastName', value: 'Salami'}})
       wrapper.find('input[name="email"]').simulate('change', {target: {name: 'email', value: 'kunsal@email.com'}})
@@ -85,6 +86,26 @@ describe ('Registration', () => {
       expect(wrapper.find('.alert').text()).toContain('Password is required');
     });
 
+    it ('should display error message if image has no value when form is submitted', () => {
+      wrapper.find('input[name="firstName"]').simulate('change', {target: {name: 'firstName', value: 'Olakunle'}})
+      wrapper.find('input[name="lastName"]').simulate('change', {target: {name: 'lastName', value: 'Salami'}})
+      wrapper.find('input[name="email"]').simulate('change', {target: {name: 'email', value: 'kunsal@email.com'}})
+      wrapper.find('input[name="password"]').simulate('change', {target: {name: 'password', value: 'password'}})
+      wrapper.find('button.submit').simulate('click');
+      expect(wrapper.find('.alert').prop('className')).toBe('alert alert-danger');
+      expect(wrapper.find('.alert').text()).toContain('Government issued ID is required');
+    });
+
+    it ('should display error message if invalid image format is uploaded', () => {
+      wrapper.find('input[name="firstName"]').simulate('change', {target: {name: 'firstName', value: 'Olakunle'}})
+      wrapper.find('input[name="lastName"]').simulate('change', {target: {name: 'lastName', value: 'Salami'}})
+      wrapper.find('input[name="email"]').simulate('change', {target: {name: 'email', value: 'kunsal@email.com'}})
+      wrapper.find('input[name="password"]').simulate('change', {target: {name: 'password', value: 'password'}})
+      wrapper.find('input[type="file"]').simulate('change', {target: {name: 'password', value: 'password'}})
+      wrapper.find('button.submit').simulate('click');
+      expect(wrapper.find('.alert').prop('className')).toBe('alert alert-danger');
+      expect(wrapper.find('.alert').text()).toContain('Government issued ID is required');
+    });
 
   });
   
