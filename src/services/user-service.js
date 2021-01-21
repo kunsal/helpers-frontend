@@ -19,6 +19,7 @@ class UserService extends BaseService {
         throw new Error('Could not save aggregator. Please try again')
       }
     } catch (error) {
+      console.log(error.response);
 
       if (error.response.status === 422) {
         return error.response.data;
@@ -32,4 +33,4 @@ class UserService extends BaseService {
   }
 }
 
-export default new UserService();
+export default new UserService;

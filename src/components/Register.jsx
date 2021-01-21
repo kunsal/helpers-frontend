@@ -10,7 +10,8 @@ class Register extends Component {
     lastName: '',
     email: '',
     password: '',
-    government_id: ''
+    government_id: '',
+    errors: []
   }
 
   handleChange = event => {
@@ -52,9 +53,28 @@ class Register extends Component {
     } else {
       console.log(this.state);
       this.setState({hasError: false, message: ''})
-      const user = await UserService.register({
-        first_name: firstName, last_name: lastName, email, password, government_id
-      });
+      try {
+        const response = await UserService.register({
+          first_name: firstName, last_name: lastName, email, password, government_id
+        });
+        if (response.hasOwnProperty('token')) {
+          this.setState({
+            message: response.message,
+            first_name: '', last_name: '', email: '', password: '', government_id: ''
+          })
+        } else {
+          let errorMessage = '';
+          for (let key in response) {
+            for (let error of response[key]) {
+              errorMessage +=`${key.toUpperCase()} ${error} | `;
+            }
+          }
+          this.setState({ hasError: true, message: errorMessage})
+        }
+      } catch (exception) {
+        this.setState({hasError: false, message: 'An error occurred'})
+      }
+      
     }
   }
 
@@ -72,6 +92,7 @@ class Register extends Component {
     let messageClasses = "alert";
     const {firstName, lastName, email, password, government_id, hasError, message} = this.state;
     messageClasses = hasError ? messageClasses + ' alert-danger' : messageClasses;
+    messageClasses = !hasError && message !== '' ? messageClasses + ' alert-success' : messageClasses;
     return (
       <div className="d-flex flex-column justify-content-center align-items-center">
         <Row className="m-auto">
