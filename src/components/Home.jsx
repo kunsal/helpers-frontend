@@ -10,7 +10,7 @@ class Home extends Component {
   constructor() {
     
     super();
-    this.consumer = ActionCable.createConsumer(`ws://localhost:3000/cable?token=${token}`)
+    this.consumer = ActionCable.createConsumer(`ws://10.101.216.15/cable?token=${tokenFire}`)
     // this.subscription = this.consumer.subscriptions.create({channel: 'AppearanceChannel', id: 1}, {
     //   connected: () => {
     //     console.log('Connected to channel')
@@ -33,12 +33,9 @@ class Home extends Component {
 
   componentDidMount() {
     console.log('Component mounted')
-  }
-
-  componentDidUpdate() {
     this.subscription = this.consumer.subscriptions.create({channel: 'AppearanceChannel', id: 1}, {
       received: (data) => {
-        const chats = [...this.state.chatMsg, data.message];
+        const chats = [...this.state.chatMsg, data];
         this.setState({chatMsg: chats});
       },
       away: () => {
@@ -47,12 +44,16 @@ class Home extends Component {
     })
   }
 
+  componentDidUpdate() {
+    
+  }
+
   handleChange = (e) => {
     this.setState({[e.target.name]: e.target.value})
   }
 
   submitMessage = () => {
-    this.subscription.send({message: this.state.message})
+    this.subscription.send({id: token, message: this.state.message})
     
     this.setState({message: ''})
   }
@@ -60,13 +61,22 @@ class Home extends Component {
   render() { 
     const { chatMsg } = this.state;
     return ( 
-      <div>
-        {chatMsg.map(chat => (
-          <p>{chat}</p>
-        ))}
-        <h1>Chats</h1>
-        <input type="text" value={this.state.message} name="message" onChange={this.handleChange} />
-        <button onClick={this.submitMessage}>Send</button>
+      <div className="row">
+        <div className="col-md-6">
+          <div className="p-20 m-10" style={{ background: '#ccc'}}>
+            {chatMsg.map(chat => (
+              chat.id === token ?
+              <p className="pull-right" style={{ color: 'green'}}>You say: {chat.message}</p>
+              : <p style={{ color: 'blue'}}>{chat.username} says: {chat.message}</p>
+            ))}
+          </div>
+          
+          <h1>Chats</h1>
+          <input className="form-control" type="text" value={this.state.message} name="message" onChange={this.handleChange} />
+          <button className="btn btn-primary" onClick={this.submitMessage}>Send</button>
+        </div>
+        
+        
       </div>
       
     );
