@@ -6,7 +6,10 @@ import userService from "../../services/user-service";
 import redirectIfNotLoggedIn from "../../middlewares/redirect-if-not-logged-in";
 
 class Front extends Component {
-  
+  state = {
+    user: null
+  }
+
   async componentDidMount() {
     redirectIfNotLoggedIn(this.props);
  
@@ -30,7 +33,7 @@ class Front extends Component {
 
     return (
       <main>
-        <AppNavbar containerized logout={this.handleLogout} />
+        <AppNavbar containerized logout={this.handleLogout} user={this.state.user} />
         {children}
       </main>
     );

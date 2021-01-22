@@ -1,13 +1,19 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { navigationLinks } from "./constants/navigation-links";
-// import createHistory from 'history/createBrowserHistory';
 import { createBrowserHistory } from "history";
+import userService from "../../services/user-service";
+import { isLoggedIn } from "../../common/helpers";
 
 const history = createBrowserHistory();
 
-const AppNavbar = ({ containerized, logout }) => {
+const AppNavbar = ({ containerized, logout, user }) => {
+  // const [user, setUser] = useState(null);
+  // useEffect(() => {
+  //   setUser(userService.getUser());
+  // });
+
   return (
     <Navbar
       collapseOnSelect
@@ -18,14 +24,9 @@ const AppNavbar = ({ containerized, logout }) => {
     >
       {containerized ? <Container>{navContent()}</Container> : navContent()}
       <Nav>
-        <Link className="btn btn-primary" to="/login">
-          Login
-        </Link>
-      </Nav>
-      <Nav>
-        <Link className="btn btn-danger" onClick={logout}>
-          Logout
-        </Link>
+        { user && <Link>{user.first_name}</Link> }
+        { !isLoggedIn() && <Link className="btn btn-primary" to="/login">Login</Link> }
+        { isLoggedIn() && <Link className="btn btn-danger" onClick={logout}>Logout</Link> }
       </Nav>
     </Navbar>
   );

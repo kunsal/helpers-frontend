@@ -84,7 +84,7 @@ class UserService extends BaseService {
   }
 
   isLoggedIn = async () => {
-    if (this.token() && this.getUser()) {
+    if (this.token()) {
       return true
     } else {
       return false;
