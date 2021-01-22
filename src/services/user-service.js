@@ -10,7 +10,6 @@ import store from '../redux/store';
 class UserService extends BaseService {
 
   async register(data) {
-    console.log(data);
     try {
       const response = await Axios.post(`${this.endpoint}/users`, JSON.stringify(data), {
         headers: {
@@ -62,9 +61,7 @@ class UserService extends BaseService {
 
   getUser = () => {
     const state = store.getState();
-    if (state.user !== undefined) {
-      return state.user;
-    }
+    return state.user.length < 1 ? false : state.user
   }
 
   profile = async () => {
@@ -87,7 +84,7 @@ class UserService extends BaseService {
   }
 
   isLoggedIn = async () => {
-    if (this.token()) {
+    if (this.token() && this.getUser()) {
       return true
     } else {
       return false;
