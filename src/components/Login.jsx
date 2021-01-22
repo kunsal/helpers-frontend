@@ -61,8 +61,7 @@ class Login extends Component {
             <img src={groupChat} width="100%" />
           </div>
           <div className="col-md-6 form-wrapper">
-            
-            <div className={messageClasses}>{message}</div>
+            <div className={messageClasses} role="alert">{message}</div>
             <h2 className="page-title">Login</h2>
             <div className="form-group my-2">
               <label htmlFor="email" className="control-label">
