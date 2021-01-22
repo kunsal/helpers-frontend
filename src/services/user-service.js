@@ -62,7 +62,9 @@ class UserService extends BaseService {
 
   getUser = () => {
     const state = store.getState();
-    if (state.user !== undefined) return state.user.currentUser;
+    if (state.user !== undefined) {
+      return state.user;
+    }
   }
 
   profile = async () => {

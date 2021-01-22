@@ -18,7 +18,6 @@ class BaseService {
 
   getToken = () => {
     const state = store.getState();
-    console.log(state);
     if (state.token !== undefined) return state.token;
   }
 
