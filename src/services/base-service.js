@@ -16,14 +16,15 @@ class BaseService {
     }
   }
 
-  // getToken = () => {
-  //   const state = store.getState();
-  //   if (state.userToken !== undefined) return state.userToken.tokenData;
-  // }
+  getToken = () => {
+    const state = store.getState();
+    console.log(state);
+    if (state.token !== undefined) return state.token;
+  }
 
-  // token = () => {
-  //   return this.getToken().accessToken;
-  // }
+  token = () => {
+    return this.getToken();
+  }
 }
 
 export default BaseService;

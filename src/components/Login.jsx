@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Row } from "react-bootstrap";
 import { Link } from 'react-router-dom';
+import userService from "../services/user-service";
+import redirectIfLoggedIn from "../middlewares/redirect-if-logged-in";
 
 class Login extends Component {
   state = {
@@ -10,11 +12,19 @@ class Login extends Component {
     password: ""
   };
 
+  componentDidMount() {
+    redirectIfLoggedIn(this.props);
+  }
+
+  componentDidUpdate() {
+    redirectIfLoggedIn(this.props);
+  }
+
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  handleLogin = () => {
+  handleLogin = async () => {
     const { email, password } = this.state;
     if (email == "") {
       this.setState({ hasError: true, message: "Email is required" });
@@ -23,6 +33,12 @@ class Login extends Component {
     } 
     else {
       this.setState({ hasError: false, message: "" });
+      const response = await userService.login(email, password);
+      if (response.hasOwnProperty('errors')) {
+        this.setState({hasError: true, message: response.errors.error[0]});
+      } else {
+        this.setState({hasError: false, message: 'Logged in successfully'});
+      }
     }
   };
 
@@ -30,6 +46,7 @@ class Login extends Component {
     const { hasError, message, email, password } = this.state;
     let messageClasses = "alert";
     if (hasError) messageClasses += " alert-danger";
+    if (!hasError && message !== '') messageClasses += " alert-success";
 
     return (
       <div className="d-flex flex-column justify-content-center align-items-center">

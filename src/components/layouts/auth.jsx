@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 
 class AuthLayout extends Component {
   state = {  }
+  
   render() { 
     return ( 
       <Container>

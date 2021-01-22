@@ -3,7 +3,7 @@ import userReducer, { userTokenReducer } from "./user-reducer";
 
 const rootReducer = combineReducers({
   user: userReducer,
-  userToken: userTokenReducer
+  token: userTokenReducer
 });
 
 export default rootReducer;

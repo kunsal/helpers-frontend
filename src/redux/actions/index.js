@@ -16,10 +16,10 @@ export const clearUser = () => {
   }
 }
 
-export const setUserToken = tokenData => {
+export const setUserToken = token=> {
   return {
     type: actionTypes.SET_USER_TOKEN,
-    payload: { tokenData }
+    payload: { token }
   }
 }
 

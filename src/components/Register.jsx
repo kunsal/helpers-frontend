@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {Row} from 'react-bootstrap';
 import UserService from '../services/user-service';
+import redirectIfLoggedIn from "../middlewares/redirect-if-logged-in";
 
 class Register extends Component {
   state = {
@@ -12,6 +13,14 @@ class Register extends Component {
     password: '',
     government_id: '',
     errors: []
+  }
+
+  componentDidMount() {
+    redirectIfLoggedIn(this.props);
+  }
+
+  componentDidUpdate() {
+    redirectIfLoggedIn(this.props);
   }
 
   handleChange = event => {
@@ -91,8 +100,10 @@ class Register extends Component {
   render() {
     let messageClasses = "alert";
     const {firstName, lastName, email, password, government_id, hasError, message} = this.state;
-    messageClasses = hasError ? messageClasses + ' alert-danger' : messageClasses;
-    messageClasses = !hasError && message !== '' ? messageClasses + ' alert-success' : messageClasses;
+    
+    if (hasError) messageClasses += " alert-danger";
+    if (!hasError && message !== '') messageClasses += " alert-success";
+
     return (
       <div className="d-flex flex-column justify-content-center align-items-center">
         <Row className="m-auto">
