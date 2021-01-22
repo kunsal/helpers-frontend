@@ -14,7 +14,7 @@ describe ('Registration', () => {
   });
 
   it ('should contain a page title', () => {
-    expect(wrapper.find('h1.page-title').text()).toBe('Register')
+    expect(wrapper.find('h2.page-title').text()).toBe('Register')
   });
 
   it ('should contain a message div', () => {
@@ -42,11 +42,11 @@ describe ('Registration', () => {
       expect(wrapper.find('input[type="password"][name="password"]').length).toEqual(1)
     });
 
-    it ('should contain a file field', () => {
-      expect(wrapper.find('label[htmlFor="government_id"]').text()).toBe('Government Issued ID')
-      expect(wrapper.find('input[type="file"]').length).toEqual(1)
-      expect(wrapper.find('.image-box').length).toEqual(1);
-    });
+    // it ('should contain a file field', () => {
+    //   expect(wrapper.find('label[htmlFor="government_id"]').text()).toBe('Government Issued ID')
+    //   expect(wrapper.find('input[type="file"]').length).toEqual(1)
+    //   expect(wrapper.find('.image-box').length).toEqual(1);
+    // });
 
     it ('should contain a button for submission', () => {
       expect(wrapper.find('button.submit').length).toEqual(1);

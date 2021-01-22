@@ -1,6 +1,9 @@
 import React, { Component } from "react";
-import {Row} from 'react-bootstrap';
+import { Link } from "react-router-dom";
 import UserService from '../services/user-service';
+import { Helmet } from 'react-helmet';
+import Logo from "./common/Logo";
+import giveBox from "../images/give-box.svg";
 import redirectIfLoggedIn from "../middlewares/redirect-if-logged-in";
 
 class Register extends Component {
@@ -13,10 +16,6 @@ class Register extends Component {
     password: '',
     government_id: '',
     errors: []
-  }
-
-  componentDidMount() {
-    redirectIfLoggedIn(this.props);
   }
 
   componentDidUpdate() {
@@ -60,7 +59,6 @@ class Register extends Component {
     } else if (this._validate_image(government_id) === false) {
       this.setState({hasError: true, message: 'Invalid image type. Please use png, jpg or gif', government_id: ''})
     } else {
-      console.log(this.state);
       this.setState({hasError: false, message: ''})
       try {
         const response = await UserService.register({
@@ -105,11 +103,24 @@ class Register extends Component {
     if (!hasError && message !== '') messageClasses += " alert-success";
 
     return (
-      <div className="d-flex flex-column justify-content-center align-items-center">
-        <Row className="m-auto">
+      <React.Fragment>
+        <Helmet>
+          <title>Register</title>
+        </Helmet>
+
+        <div className="row wrapper">
           <div className="col-md-12 text-center">
-            <h1 className="page-title">Register</h1>
+            <Link to='/'>
+              <Logo width={200}/>
+            </Link>
+          </div>
+          <div className="col-md-6 centralize" >
+            <img src={giveBox} width="100%" />
+          </div>
+          <div className="col-md-6 form-wrapper">
+            
             <div className={messageClasses}>{message}</div>
+            <h2 className="page-title">Register</h2>
             <div className="form-group">
               <label htmlFor="firstName" className="control-label">
                 First Name
@@ -182,10 +193,12 @@ class Register extends Component {
             >
               Submit
             </button>
+            <Link to="/login">
+              Already registered? Login
+            </Link>
           </div>
-        
-        </Row>
-      </div>
+        </div>
+      </React.Fragment>
     );
   }
 }

@@ -2209,6 +2209,11 @@ acorn@^7.1.0, acorn@^7.1.1, acorn@^7.4.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.4.1.tgz#feaed255973d2e77555b83dbc08851a6c63520fa"
   integrity sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==
 
+actioncable@^5.2.4:
+  version "5.2.4"
+  resolved "https://registry.yarnpkg.com/actioncable/-/actioncable-5.2.4.tgz#744f555f16d87413044f81074a9cc4d2cf416502"
+  integrity sha512-2mCP0eKTjxtDWNPqP6xPar9a5i8F/pndrTHJGU6QDS1a77B+DlPEWzPRiyNAaNEGMY/9yTBOP3CXhR+8/zaVQw==
+
 address@1.1.2, address@^1.0.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/address/-/address-1.1.2.tgz#bf1116c9c758c51b7a933d296b72c221ed9428b6"

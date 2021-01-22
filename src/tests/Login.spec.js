@@ -12,7 +12,7 @@ describe('Login page', () => {
     wrapper;
   });
   it ('should contain a Login header', () => {
-  expect(wrapper.find('h1.page-title').text()).toBe('Login');
+  expect(wrapper.find('h2.page-title').text()).toBe('Login');
   });
 
   it ('should contain a field for email address', () => {

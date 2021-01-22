@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import { Row } from "react-bootstrap";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import userService from "../services/user-service";
+import groupChat from "../images/group-chat.svg";
+import { Helmet } from 'react-helmet';
+import Logo from "./common/Logo";
 import redirectIfLoggedIn from "../middlewares/redirect-if-logged-in";
 
 class Login extends Component {
@@ -11,10 +13,6 @@ class Login extends Component {
     email: "",
     password: ""
   };
-
-  componentDidMount() {
-    redirectIfLoggedIn(this.props);
-  }
 
   componentDidUpdate() {
     redirectIfLoggedIn(this.props);
@@ -29,15 +27,14 @@ class Login extends Component {
     if (email == "") {
       this.setState({ hasError: true, message: "Email is required" });
     } else if (password == "") {
-      this.setState({ hasError: true, message: "Password is required"})
-    } 
-    else {
+      this.setState({ hasError: true, message: "Password is required" });
+    } else {
       this.setState({ hasError: false, message: "" });
       const response = await userService.login(email, password);
-      if (response.hasOwnProperty('errors')) {
-        this.setState({hasError: true, message: response.errors.error[0]});
+      if (response.hasOwnProperty("errors")) {
+        this.setState({ hasError: true, message: response.errors.error[0] });
       } else {
-        this.setState({hasError: false, message: 'Logged in successfully'});
+        this.setState({ hasError: false, message: "Logged in successfully" });
       }
     }
   };
@@ -46,17 +43,29 @@ class Login extends Component {
     const { hasError, message, email, password } = this.state;
     let messageClasses = "alert";
     if (hasError) messageClasses += " alert-danger";
-    if (!hasError && message !== '') messageClasses += " alert-success";
+    if (!hasError && message !== "") messageClasses += " alert-success";
 
     return (
-      <div className="d-flex flex-column justify-content-center align-items-center">
-        <Row className="m-auto">
+      <React.Fragment>
+        <Helmet>
+          <title>Login</title>
+        </Helmet>
+
+        <div className="row wrapper">
           <div className="col-md-12 text-center">
-            <h1 className="page-title">Login</h1>
+            <Link to='/'>
+              <Logo width={200}/>
+            </Link>
+          </div>
+          <div className="col-md-6 centralize" >
+            <img src={groupChat} width="100%" />
+          </div>
+          <div className="col-md-6 form-wrapper">
+            
             <div className={messageClasses}>{message}</div>
-          
-            <div className="form-group">
-              <label htmlFor="" className="control-label">
+            <h2 className="page-title">Login</h2>
+            <div className="form-group my-2">
+              <label htmlFor="email" className="control-label">
                 Email
               </label>
               <input
@@ -67,8 +76,8 @@ class Login extends Component {
                 className="form-control"
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="" className="control-label">
+            <div className="form-group my-2">
+              <label htmlFor="password" className="control-label">
                 Password
               </label>
               <input
@@ -80,7 +89,7 @@ class Login extends Component {
               />
             </div>
             <button
-              className="btn btn-primary submit"
+              className="btn btn-primary submit my-2"
               onClick={this.handleLogin}
             >
               Login
@@ -89,8 +98,9 @@ class Login extends Component {
               No account? Register
             </Link>
           </div>
-        </Row>
-      </div>
+        </div>
+
+      </React.Fragment>
     );
   }
 }
