@@ -5,7 +5,7 @@ const initialState = [];
 const userReducer = (state = initialState, action) => {
   switch(action.type) {
     case actionTypes.SET_USER:
-      return  action.payload.currentUser
+      return  action.payload
     case actionTypes.CLEAR_USER:
       return initialState;  
     default:
@@ -13,14 +13,12 @@ const userReducer = (state = initialState, action) => {
   }
 }
 
-const initialTokenState = {
-  token: null
-}
+const initialTokenState = null
 
 export const userTokenReducer = (state = initialTokenState, action) => {
   switch (action.type) {
     case actionTypes.SET_USER_TOKEN:
-      return  action.payload.token
+      return  action.payload
     case actionTypes.CLEAR_USER_TOKEN:
       return initialTokenState;
     default: 

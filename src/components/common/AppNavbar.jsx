@@ -1,16 +1,32 @@
 import React from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { navigationLinks } from "./constants/navigation-links";
 // import createHistory from 'history/createBrowserHistory';
-import { createBrowserHistory } from 'history';
+import { createBrowserHistory } from "history";
 
 const history = createBrowserHistory();
 
-const AppNavbar = ({ containerized }) => {
+const AppNavbar = ({ containerized, logout }) => {
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" className="nav-transparent nav-tall">
-      { containerized ? <Container>{navContent()}</Container> : navContent() }
+    <Navbar
+      collapseOnSelect
+      expand="lg"
+      bg="dark"
+      variant="dark"
+      className="nav-transparent nav-tall"
+    >
+      {containerized ? <Container>{navContent()}</Container> : navContent()}
+      <Nav>
+        <Link className="btn btn-primary" to="/login">
+          Login
+        </Link>
+      </Nav>
+      <Nav>
+        <Link className="btn btn-danger" onClick={logout}>
+          Logout
+        </Link>
+      </Nav>
     </Navbar>
   );
 };
@@ -23,16 +39,15 @@ const navContent = () => {
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
-          {
-            pages.map(page => <Link className="nav-link" to={page.link} key={page.link}>{page.title}</Link>)
-          }
-        </Nav>
-        <Nav>
-          <Link className="btn btn-primary" to="/login">Login</Link>
+          {pages.map(page => (
+            <Link className="nav-link" to={page.link} key={page.link}>
+              {page.title}
+            </Link>
+          ))}
         </Nav>
       </Navbar.Collapse>
     </Navbar>
-  )
+  );
 };
 
 export default AppNavbar;

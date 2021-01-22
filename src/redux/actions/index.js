@@ -4,9 +4,7 @@ import * as actionTypes from './types';
 export const setUser = user => {
   return {
     type: actionTypes.SET_USER,
-    payload: {
-      currentUser: user
-    }
+    payload: user
   }
 }
 
@@ -19,7 +17,7 @@ export const clearUser = () => {
 export const setUserToken = token=> {
   return {
     type: actionTypes.SET_USER_TOKEN,
-    payload: { token }
+    payload: token
   }
 }
 

@@ -24,12 +24,13 @@ class Front extends Component {
     userService.logout();
     this.props.history.push('/login');
   }
+  
   render() {
     const { children } = this.props;
 
     return (
       <main>
-        <AppNavbar containerized/>
+        <AppNavbar containerized logout={this.handleLogout} />
         {children}
       </main>
     );

@@ -39,9 +39,9 @@ class UserService extends BaseService {
   }
 
   async login(email, password) {
+    store.dispatch(clearUserToken());
     try {
       const response = await Axios.post(`${this.endpoint}/login`, { email, password });
-      console.log(response);
       if (response.status === 200) {
         const token = response.data.token;
         store.dispatch(setUserToken(token));
@@ -78,18 +78,17 @@ class UserService extends BaseService {
       });
 
       if (response.status === 200) {
-        store.dispatch(setUser(response.data));
+        store.dispatch(setUser(response.data.user));
       }
       return response.data;
     }
   }
 
   isLoggedIn = async () => {
-    console.log('Token', this.getToken());
-    if (this.getToken()) {
+    if (this.token()) {
       return true
     } else {
-        return false;
+      return false;
     }
   }
 
