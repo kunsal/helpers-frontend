@@ -13,7 +13,7 @@ const Alert = ({messageclasses, message}) => {
      message = '';
    }
  })
-  console.log(show);
+  
   return ( 
     show && 
     <div className={messageclasses}>
