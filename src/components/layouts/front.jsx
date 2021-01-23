@@ -56,7 +56,7 @@ class Front extends Component {
           `}</style>
         </Helmet>
         <AppNavbar logout={this.handleLogout} user={this.state.user} />
-        <div className="container-fluid">
+        <div className="">
          {children}
         </div>
         
