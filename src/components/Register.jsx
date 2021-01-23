@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet';
 import Logo from "./common/Logo";
 import giveBox from "../images/give-box.svg";
 import redirectIfLoggedIn from "../middlewares/redirect-if-logged-in";
+import Alert from "./common/Alert";
 
 class Register extends Component {
   state = {
@@ -120,9 +121,8 @@ class Register extends Component {
             <img src={giveBox} width="100%" />
           </div>
           <div className="col-md-6 form-wrapper">
-            
-            <div className={messageClasses}>{message}</div>
             <h2 className="page-title">Register</h2>
+            <Alert messageclasses={messageClasses} message={message} />
             <div className="form-group">
               <label htmlFor="firstName" className="control-label">
                 First Name

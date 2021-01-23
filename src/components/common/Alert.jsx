@@ -1,14 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const Alert = ({messageClasses, message, status}) => {
-  messageClasses += ' alert-dismissible fade show';
-  const [closed, setClose] = useState(status);
-
+const Alert = ({messageclasses, message}) => {
+  messageclasses += ' alert-dismissible fade show';
+ let [show, setShow] = useState(false);
+ let [content, setContent] = useState('');
+ useEffect(() => {
+   setContent(message);
+   if (content !== '') {
+     setShow(true);
+   } else {
+     setShow(false);
+     message = '';
+   }
+ })
+  console.log(show);
   return ( 
-    !closed && 
-    <div className={messageClasses} role="alert">
-      {message}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" onClick={() => setClose(true)} aria-label="Close"></button>
+    show && 
+    <div className={messageclasses}>
+      {content}
+      <button type="button" className="btn-close" data-bs-dismiss="alert" onClick={() => {
+        setContent('')
+      }} aria-label="Close"></button>
     </div>
    );
 }

@@ -5,6 +5,7 @@ import groupChat from "../images/group-chat.svg";
 import { Helmet } from 'react-helmet';
 import Logo from "./common/Logo";
 import redirectIfLoggedIn from "../middlewares/redirect-if-logged-in";
+import Alert from "./common/Alert";
 
 class Login extends Component {
   state = {
@@ -62,8 +63,8 @@ class Login extends Component {
             <img src={groupChat} width="100%" />
           </div>
           <div className="col-md-6 form-wrapper">
-            <div className={messageClasses} role="alert">{message}</div>
             <h2 className="page-title">Login</h2>
+            <Alert messageclasses={messageClasses} message={message} />
             <div className="form-group my-2">
               <label htmlFor="email" className="control-label">
                 Email
