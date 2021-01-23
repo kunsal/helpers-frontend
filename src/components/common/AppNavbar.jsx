@@ -1,18 +1,41 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { navigationLinks } from "./constants/navigation-links";
 import { createBrowserHistory } from "history";
-import userService from "../../services/user-service";
 import { isLoggedIn } from "../../common/helpers";
+import Logo from "./Logo";
 
 const history = createBrowserHistory();
 
 const AppNavbar = ({ containerized, logout, user }) => {
-  // const [user, setUser] = useState(null);
-  // useEffect(() => {
-  //   setUser(userService.getUser());
-  // });
+  const pages = navigationLinks.filter(nav => nav.useInNavbar === true);
+
+//   return (
+//   <nav className="navbar navbar-expand-lg navbar-light bg-light">
+//   <div className="container-fluid">
+//     <a className="navbar-brand" href="#">Navbar</a>
+//     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+//       <span className="navbar-toggler-icon"></span>
+//     </button>
+//     <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+      // <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+      //   <li className="nav-item">
+      //     <a className="nav-link" href="#">Link</a>
+      //   </li>
+      //   <li className="nav-item">
+      //     <a className="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+      //   </li>
+      // </ul>
+      // <form className="d-flex">
+      //   <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+      //   <button className="btn btn-outline-success" type="submit">Search</button>
+      // </form>
+//     </div>
+//   </div>
+// </nav>
+
+//   );
 
   return (
     <Navbar
@@ -22,32 +45,46 @@ const AppNavbar = ({ containerized, logout, user }) => {
       variant="dark"
       className="nav-transparent nav-tall"
     >
-      {containerized ? <Container>{navContent()}</Container> : navContent()}
-      <Nav>
-        { user && <Link>{user.first_name}</Link> }
-        { !isLoggedIn() && <Link className="btn btn-primary" to="/login">Login</Link> }
-        { isLoggedIn() && <Link className="btn btn-danger" onClick={logout}>Logout</Link> }
-      </Nav>
+      {containerized ? (
+        <Container>{navContent(user, logout)}</Container>
+      ) : (
+        navContent(user, logout)
+      )}
     </Navbar>
   );
 };
 
-const navContent = () => {
+const navContent = (user, logout) => {
   const pages = navigationLinks.filter(nav => nav.useInNavbar === true);
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-      <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+    <React.Fragment>
+      <Navbar.Brand href="#home">
+        <Logo />
+      </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-      <Navbar.Collapse id="responsive-navbar-nav">
-        <Nav className="mr-auto">
-          {pages.map(page => (
-            <Link className="nav-link" to={page.link} key={page.link}>
-              {page.title}
-            </Link>
-          ))}
-        </Nav>
-      </Navbar.Collapse>
-    </Navbar>
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto mb-2 mb-lg-0">
+            {pages.map(page => (
+              <Link className="nav-link mx-1" to={page.link} key={page.link}>
+                {page.title}
+              </Link>
+            ))}
+          </Nav>
+          <Nav>
+            {user && <Link className="nav-link username">Hi {user.first_name}</Link>}
+            {!isLoggedIn() && (
+              <Link className="btn btn-primary" to="/login">
+                Login
+              </Link>
+            )}
+            {isLoggedIn() && (
+              <Link className="btn btn-danger mr-1" onClick={logout}>
+                Logout
+              </Link>
+            )}
+          </Nav>
+        </Navbar.Collapse>
+    </React.Fragment>
   );
 };
 

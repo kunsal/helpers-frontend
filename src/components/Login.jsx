@@ -11,7 +11,8 @@ class Login extends Component {
     hasError: false,
     message: "",
     email: "",
-    password: ""
+    password: "",
+    loading: false
   };
 
   componentDidUpdate() {
@@ -29,18 +30,18 @@ class Login extends Component {
     } else if (password == "") {
       this.setState({ hasError: true, message: "Password is required" });
     } else {
-      this.setState({ hasError: false, message: "" });
+      this.setState({ hasError: false, message: "", loading: true });
       const response = await userService.login(email, password);
       if (response.hasOwnProperty("errors")) {
-        this.setState({ hasError: true, message: response.errors.error[0] });
+        this.setState({ hasError: true, message: response.errors.error[0], loading: false });
       } else {
-        this.setState({ hasError: false, message: "Logged in successfully" });
+        this.setState({ hasError: false, message: "Logged in successfully", loading: false });
       }
     }
   };
 
   render() {
-    const { hasError, message, email, password } = this.state;
+    const { hasError, message, email, password, loading } = this.state;
     let messageClasses = "alert";
     if (hasError) messageClasses += " alert-danger";
     if (!hasError && message !== "") messageClasses += " alert-success";
@@ -90,8 +91,9 @@ class Login extends Component {
             <button
               className="btn btn-primary submit my-2"
               onClick={this.handleLogin}
+              disabled={loading ? true : false}
             >
-              Login
+              {loading ? '...' : 'Login'}
             </button>
             <Link to="/register" id="registration-link">
               No account? Register

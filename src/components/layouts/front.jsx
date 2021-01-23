@@ -4,6 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import AppNavbar from "../common/AppNavbar";
 import userService from "../../services/user-service";
 import redirectIfNotLoggedIn from "../../middlewares/redirect-if-not-logged-in";
+import { Helmet } from 'react-helmet';
 
 class Front extends Component {
   state = {
@@ -33,8 +34,32 @@ class Front extends Component {
 
     return (
       <main>
-        <AppNavbar containerized logout={this.handleLogout} user={this.state.user} />
-        {children}
+        <Helmet>
+          <title>Helpers</title>
+          <style type="text/css">{`
+            .nav-link {
+              color: #ccc !important;
+              letter-spacing: 1px;
+              font-weight: bold;
+              font-size: 15px;
+            }
+
+            .nav-link:hover, .nav-link:active {
+              color: #fff !important; 
+            }
+
+            .nav-link.username {
+              text-decoration: none !important;
+              letter-spacing: 1px;
+              font-weight: normal;
+            }
+          `}</style>
+        </Helmet>
+        <AppNavbar logout={this.handleLogout} user={this.state.user} />
+        <div className="container-fluid">
+         {children}
+        </div>
+        
       </main>
     );
   }

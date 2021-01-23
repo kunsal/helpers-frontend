@@ -15,7 +15,8 @@ class Register extends Component {
     email: '',
     password: '',
     government_id: '',
-    errors: []
+    errors: [],
+    loading: false
   }
 
   componentDidUpdate() {
@@ -59,7 +60,7 @@ class Register extends Component {
     } else if (this._validate_image(government_id) === false) {
       this.setState({hasError: true, message: 'Invalid image type. Please use png, jpg or gif', government_id: ''})
     } else {
-      this.setState({hasError: false, message: ''})
+      this.setState({hasError: false, message: '', loading: true})
       try {
         const response = await UserService.register({
           first_name: firstName, last_name: lastName, email, password, government_id
@@ -67,7 +68,8 @@ class Register extends Component {
         if (response.hasOwnProperty('token')) {
           this.setState({
             message: response.message,
-            first_name: '', last_name: '', email: '', password: '', government_id: ''
+            first_name: '', last_name: '', email: '', password: '', government_id: '',
+            loading: false
           })
         } else {
           let errorMessage = '';
@@ -76,10 +78,10 @@ class Register extends Component {
               errorMessage +=`${key.toUpperCase()} ${error} | `;
             }
           }
-          this.setState({ hasError: true, message: errorMessage})
+          this.setState({ hasError: true, message: errorMessage, loading: false})
         }
       } catch (exception) {
-        this.setState({hasError: false, message: 'An error occurred'})
+        this.setState({hasError: true, message: 'An error occurred', loading: false})
       }
       
     }
@@ -97,7 +99,7 @@ class Register extends Component {
 
   render() {
     let messageClasses = "alert";
-    const {firstName, lastName, email, password, government_id, hasError, message} = this.state;
+    const {firstName, lastName, email, password, government_id, hasError, message, loading} = this.state;
     
     if (hasError) messageClasses += " alert-danger";
     if (!hasError && message !== '') messageClasses += " alert-success";
@@ -190,8 +192,9 @@ class Register extends Component {
             <button
               className="btn btn-primary submit"
               onClick={this.handleRegister}
-            >
-              Submit
+              disabled={loading ? true : false}
+              >
+                {loading ? '...' : 'Submit'}
             </button>
             <Link to="/login">
               Already registered? Login
