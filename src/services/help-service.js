@@ -24,6 +24,24 @@ class HelpService extends BaseService {
     }
   }
 
+  async getHelps() {
+    try {
+      const response = await axios.get(`${this.endpoint}/helps`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: `Bearer ${this.token()}`
+        }
+      });
+      console.log(response);
+      if (response.status === 200) {
+        return response.data;
+      } 
+    } catch (error) {
+      console.log(error.response)
+    }
+  }
+
   async categories() {
     try {
       const response = await axios.get(`${this.endpoint}/categories`, {
