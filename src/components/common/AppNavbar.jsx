@@ -71,16 +71,16 @@ const navContent = (user, logout) => {
             ))}
           </Nav>
           <Nav>
-            {user && <Link className="nav-link username">Hi {user.first_name}</Link>}
+            {user && <a href='#' className="nav-link username">Hi {user.first_name}</a>}
             {!isLoggedIn() && (
               <Link className="btn btn-primary" to="/login">
                 Login
               </Link>
             )}
             {isLoggedIn() && (
-              <Link className="btn btn-danger mr-1" onClick={logout}>
+              <button className="btn btn-danger mr-1" onClick={logout}>
                 Logout
-              </Link>
+              </button>
             )}
           </Nav>
         </Navbar.Collapse>
