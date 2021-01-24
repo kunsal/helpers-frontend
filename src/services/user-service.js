@@ -23,7 +23,7 @@ class UserService extends BaseService {
         store.dispatch(setUserToken(token));
         return response.data;
       } else {
-        throw new Error('Could not save aggregator. Please try again')
+        throw new Error('Could not save user. Please try again')
       }
     } catch (error) {
       if (error.response.status === 422) {

@@ -3,26 +3,34 @@ import { Helmet } from 'react-helmet';
 import GoogleMapReact from 'google-map-react';
 import Marker from './common/Marker';
 import Alert from './common/Alert';
+import helpService from '../services/help-service';
 
 const Pointer = () => <div style={{ color: 'red', fontSize: '18px', fontWeight: 'bold'}}>Marker</div>
 
 class CreateHelp extends Component {
   state = { 
-    categoryOptions: [{id: 1, name: 'Monetary Need'}, {id: 2, name: 'Material Need'}],
+    categories: [],
     title: '',
     category: '',
     description: '',
     location: '',
     hasError: false,
     message: "",
+    loading: false
+  }
+
+  async componentDidMount() {
+    const categories = await helpService.categories();
+    this.setState({categories});
   }
 
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value })
   }
 
-  handleFormSubmit = e => {
+  handleFormSubmit = async (e) => {
     const {title, category, description, location} = this.state;
+    this.setState({ loading: true })
     if (title === "") {
       this.setState({ hasError: true, message: "Title is required" });
     } else if (category === '') {
@@ -32,13 +40,39 @@ class CreateHelp extends Component {
     } else if (location === '') {
       this.setState({ hasError: true, message: "Location is required" });
     } else {
-      console.log(this.state);
+      this.setState({ hasError: false, message: "" });
+      try {
+        const response = await helpService.create({
+          title, category_id: category, description, location
+        });
+        //console.log(response);
+        if (response.status === 201) {
+          console.log('success');
+          this.setState({
+            message: 'Help created successfully.',
+            title: '', category: '', description: '', location: '',
+            loading: false
+          })
+        } else {
+          console.log('Here we are');
+          let errorMessage = '';
+          let errors = response.data;
+          for (let key in errors) {
+            for (let error of errors[key]) {
+              errorMessage +=`${key.toUpperCase()} ${error} | `;
+            }
+          }
+          this.setState({ hasError: true, message: errorMessage, loading: false})
+        }
+      } catch (exception) {
+        this.setState({hasError: true, message: 'An error occurred', loading: false})
+      }
     }
-    e.preventDefault();
+   this.setState({ loading: false })
   }
 
   render() {
-    const {categoryOptions, hasError, message} = this.state;
+    const {title, category, description, location, categories, hasError, message, loading} = this.state;
 
     let messageClasses = "alert";
     if (hasError) messageClasses += " alert-danger";
@@ -56,31 +90,37 @@ class CreateHelp extends Component {
               </div>
               <div className="col-md-8">
                 <Alert messageclasses={messageClasses} message={message} />
-                <form onSubmit={this.handleFormSubmit}>
+                
                   <div className="form-group">
                     <label className="control-label">Title</label>
-                    <input className="form-control" name="title" onChange={this.handleChange} />
+                    <input className="form-control" value={title} name="title" onChange={this.handleChange} />
                   </div>
                   <div className="form-group">
                     <label className="control-label">Category</label>
-                    <select className="form-control" name="category" onChange={this.handleChange}>
+                    <select className="form-control" name="category" onChange={this.handleChange} value={category}>
                       <option>-- Choose a category --</option>
-                      {categoryOptions && categoryOptions.map(category => 
+                      {categories.length > 0 && categories.map(category => 
                         <option value={category.id} key={category.id}>{category.name}</option>
                       )}
                     </select>
                   </div>
                   <div className="form-group">
                     <label className="control-label">Description</label>
-                    <textarea className="form-control" name="description" onChange={this.handleChange} />
+                    <textarea className="form-control" value={description} name="description" onChange={this.handleChange} />
                   </div>
                   
                   <div className="form-group">
                     <label className="control-label">Location (Enter long and lat coordinates)</label>
-                    <input className="form-control" name="location" onChange={this.handleChange} />
+                    <input className="form-control" value={location} name="location" onChange={this.handleChange} />
                   </div>
                   
-                  <button className="btn btn-primary" type="submit">Submit</button>
+                  <button 
+                    className="btn btn-primary" 
+                    disabled={loading ? true : false}
+                    onClick={this.handleFormSubmit}
+                  >
+                    {loading ? '...' : 'Submit'}
+                  </button>
                   {/* <div style={{ height: '300px', width: '100%' }}>
                     <GoogleMapReact
                       bootstrapURLKeys={{ key: 'AIzaSyCs8rvda2R2CEy9tVbhzimcNl9R8ec54mQ' }}
@@ -98,7 +138,7 @@ class CreateHelp extends Component {
                       />
                     </GoogleMapReact>
                   </div> */}
-                </form>
+                
               </div>
             </div>
           </div>
