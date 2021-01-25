@@ -30,7 +30,7 @@ class Home extends Component {
         <div className="col-md-8 col-sm-12">
           <div style={{ height: '100vh', width: '100%' }}>
             <GoogleMapReact
-              bootstrapURLKeys={{ key: 'AIzaSyCs8rvda2R2CEy9tVbhzimcNl9R8ec54mQ' }}
+              bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
               defaultCenter={this.state.center}
               defaultZoom={this.state.zoom}
               yesIWantToUseGoogleMapApiInternals
@@ -42,29 +42,22 @@ class Home extends Component {
                   let coordinates = help.location.split(',');
                   let lng = coordinates[0];
                   let lat = coordinates[1];
-                  return <Marker lat={lng} lng={lat} help={help} /> 
+                  return <Marker yesIWantToUseGoogleMapApiInternals draggable lat={lng} lng={lat} help={help} /> 
                 })
               }
-              {/* <Marker
-                lat={59.955413}
-                lng={30.337844}
-              />
-              <Marker
-                lat={59.93}
-                lng={30.33}
-              /> */}
             </GoogleMapReact>
           </div>
         </div>
         <div className="col-md-4 col-sm-12">
           {helps.length > 0 ? helps.map(help => (
           <div className="card mb-3">
-            <div className="card-header">
-              {help.location}
+            <div className="card-header" style={{ backgroundColor: help.category.color }}>
+              {help.category.name}
             </div>
             <div className="card-body">
               <h5 className="card-title">{help.title}</h5>
               <p className="card-text">{help.description}</p>
+              <p className="help-text">{help.user.first_name}</p>
               <a href="#" className="btn btn-primary">Go somewhere</a>
             </div>
           </div>
