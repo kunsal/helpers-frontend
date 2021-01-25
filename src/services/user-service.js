@@ -8,6 +8,10 @@ import {
 } from '../redux/actions';
 import store from '../redux/store';
 class UserService extends BaseService {
+  constructor() {
+    super();
+    // this.logout();
+  }
 
   async register(data) {
     try {
@@ -77,7 +81,7 @@ class UserService extends BaseService {
       });
 
       if (response.status === 200) {
-        store.dispatch(setUser(response.data.user));
+        store.dispatch(setUser(response.data));
       }
       return response.data;
     }
