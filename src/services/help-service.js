@@ -42,9 +42,9 @@ class HelpService extends BaseService {
     }
   }
 
-  async categories() {
+  async getHelp(id) {
     try {
-      const response = await axios.get(`${this.endpoint}/categories`, {
+      const response = await axios.get(`${this.endpoint}/helps/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -57,6 +57,27 @@ class HelpService extends BaseService {
       } 
     } catch (error) {
       console.log(error.response)
+    }
+  }
+
+  async categories() {
+    try {
+      const response = await axios.get(`${this.endpoint}/categories`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: `Bearer ${this.token()}`
+        }
+      });
+      console.log(response);
+      if (response.status === 200) {
+        return response.data;
+      } else {
+        throw new Error('Something happened')
+      }
+    } catch (error) {
+      console.log(error.response)
+      return [];
     }
   }
 

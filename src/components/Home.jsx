@@ -1,5 +1,4 @@
 import React, { Component, useEffect, useState } from 'react';
-import ActionCable from 'actioncable';
 import userService from '../services/user-service';
 import GoogleMapReact from 'google-map-react';
 import Marker from './common/Marker';

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import redMarker from "../../images/red-marker.svg";
 import { Helmet } from "react-helmet";
 import { Modal, Button } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 
 class Marker extends Component {
   state = {
@@ -64,7 +65,7 @@ class Marker extends Component {
               <Button variant="secondary" onClick={this.handleClose}>
                 Close
               </Button>
-              <Button variant="primary">Render Help</Button>
+              <Link to={`/help/${help.id}`} className="btn btn-primary">Offer to help</Link>
             </Modal.Footer>
           </>
         }

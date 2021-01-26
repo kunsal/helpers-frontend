@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
-import GoogleMapReact from 'google-map-react';
-import Marker from './common/Marker';
 import Alert from './common/Alert';
 import helpService from '../services/help-service';
+import ActionCable from 'actioncable';
+import userService from '../services/user-service';
 
 const Pointer = () => <div style={{ color: 'red', fontSize: '18px', fontWeight: 'bold'}}>Marker</div>
 
 class CreateHelp extends Component {
+  constructor() {
+    super();
+    this.consumer = ActionCable.createConsumer(`ws://localhost:8800/cable?token=${userService.token()}`)
+  }
+
   state = { 
     categories: [],
     title: '',
@@ -22,6 +27,14 @@ class CreateHelp extends Component {
   async componentDidMount() {
     const categories = await helpService.categories();
     this.setState({categories});
+    this.subscription = this.consumer.subscriptions.create({channel: 'HelpsChannel'}, {
+      received: (data) => {
+        console.log(data);
+      },
+      away: () => {
+
+      }
+    });
   }
 
   handleChange = (e) => {
