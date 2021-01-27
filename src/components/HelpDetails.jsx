@@ -1,17 +1,36 @@
 import React, { Component } from 'react';
 import helpService from '../services/help-service';
 import Skeleton from 'react-loading-skeleton';
+import ActionCableBase from './ActionCableBase';
 
-class HelpDetails extends Component {
-  state = { help: false }
+class HelpDetails extends ActionCableBase {
+  state = { help: false, message: '', messages: [] }
 
   async componentDidMount() {
     try {
       const help = await helpService.getHelp(this.props.match.params.id)
       this.setState({help})
+      this.subscription = this.consumer.subscriptions.create({channel: 'ChatsChannel', id: help.id }, {
+        connected: () => {
+          console.log('Connected to channel')
+        },
+        received: (data) => {
+          console.log(data);
+          this.setState({messages: [...this.state.messages, data.message]});
+        }
+      })
     } catch (error) {
       console.log(error);
     }
+  }
+
+  handleChange = (e) => {
+    this.setState({[e.target.name]: e.target.value})
+  }
+
+  handleSubmit = () => {
+    this.subscription.send({id: this.state.help.id, message: this.state.message});
+    this.setState({message: ''})
   }
 
   render() { 
@@ -42,6 +61,16 @@ class HelpDetails extends Component {
           
         </div> 
         }
+        <div className="col-md-5">
+          {this.state.messages.map((message, idx) => (
+            <p key={idx}>{message}</p>
+          ))}
+          <div className="form-group">
+            <label htmlFor="message" className="control-label"></label>
+            <textarea name="message" id="message" value={this.state.message} rows="5" className="form-control" onChange={this.handleChange}></textarea>
+          </div>
+          <button onClick={this.handleSubmit} className="btn btn-primary">Submit</button>
+        </div>
       </div>
       
     )

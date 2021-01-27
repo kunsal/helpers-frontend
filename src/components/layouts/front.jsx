@@ -5,6 +5,11 @@ import AppNavbar from "../common/AppNavbar";
 import userService from "../../services/user-service";
 import redirectIfNotLoggedIn from "../../middlewares/redirect-if-not-logged-in";
 import { Helmet } from 'react-helmet';
+import actioncable from 'actioncable';
+
+const CableApp = {}
+
+CableApp.cable = actioncable.createConsumer(`ws://localhost:8800/cable?token=${userService.token()}`)
 
 class Front extends Component {
   state = {
@@ -31,11 +36,14 @@ class Front extends Component {
   
   render() {
     const { children } = this.props;
-
+    const appName = 'Helpers';
+    const childrenWithExtraProp = React.Children.map(children, child =>
+      React.cloneElement(child, { cableApp: CableApp.cable, appName })
+    );
     return (
       <main>
         <Helmet>
-          <title>Helpers</title>
+          <title>{appName}</title>
           <style type="text/css">{`
             .nav-link {
               color: #ccc !important;
@@ -57,7 +65,7 @@ class Front extends Component {
         </Helmet>
         <AppNavbar logout={this.handleLogout} user={this.state.user} />
         <div className="">
-         {children}
+         { childrenWithExtraProp }
         </div>
         
       </main>

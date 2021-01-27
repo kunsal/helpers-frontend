@@ -5,7 +5,7 @@ import { navigationLinks } from "./components/common/constants/navigation-links"
 import LayoutRoute from './components/layouts/LayoutRoute';
 import { Helmet } from 'react-helmet';
 
-function App() {
+function App({props}) {
   return (
     <Router>
       <Helmet>
@@ -25,10 +25,10 @@ function App() {
         </style>    
       </Helmet>
       <Switch>
-          {navigationLinks.map(page => (
-            <LayoutRoute layout={page.layout} path={page.link} component={page.component} key={page.link} exact={page.exact} /> 
-          ))};
-        </Switch>
+        {navigationLinks.map(page => (
+          <LayoutRoute layout={page.layout} path={page.link} component={page.component} key={page.link} exact={page.exact} {...props} /> 
+        ))};
+      </Switch>
     </Router>
   );
 }
