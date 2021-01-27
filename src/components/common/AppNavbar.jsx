@@ -58,9 +58,9 @@ const navContent = (user, logout) => {
   const pages = navigationLinks.filter(nav => nav.useInNavbar === true);
   return (
     <React.Fragment>
-      <Navbar.Brand href="#home">
+      <Link to="/" className="navbar-brand">
         <Logo />
-      </Navbar.Brand>
+      </Link>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto mb-2 mb-lg-0">
