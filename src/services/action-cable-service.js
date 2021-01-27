@@ -6,9 +6,14 @@ const consumer = () => {
 }
 
 export const HelpChannel = () => {
-  return consumer.subscriptions.create({channel: 'HelpChannel'}, {
-    received: () => console.log('Received info from help')
-  })
+  try {
+    return consumer.subscriptions.create({channel: 'HelpChannel'}, {
+      received: () => console.log('Received info from help')
+    })
+  } catch (error) {
+    console.log('Action cable service: ', error);
+  }
+  
 }
 
 export default consumer;

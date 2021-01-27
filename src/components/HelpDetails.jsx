@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import helpService from '../services/help-service';
 import Skeleton from 'react-loading-skeleton';
 import ActionCableBase from './ActionCableBase';
+import chatService from '../services/chat-service';
+import userService from '../services/user-service';
 
 class HelpDetails extends ActionCableBase {
-  state = { help: false, message: '', messages: [] }
+  state = { help: false, message: '', chats: [] }
 
   async componentDidMount() {
     try {
@@ -12,11 +14,16 @@ class HelpDetails extends ActionCableBase {
       this.setState({help})
       this.subscription = this.consumer.subscriptions.create({channel: 'ChatsChannel', id: help.id }, {
         connected: () => {
-          console.log('Connected to channel')
+          console.log('Connection successful')
         },
         received: (data) => {
-          console.log(data);
-          this.setState({messages: [...this.state.messages, data.message]});
+          //console.log(data);
+          if (data.initial !== undefined) {
+            this.setState({chats: JSON.parse(data.chats)})
+          } else {
+            data = JSON.parse(data)
+            this.setState({chats: [...this.state.chats, data]});
+          }
         }
       })
     } catch (error) {
@@ -28,13 +35,24 @@ class HelpDetails extends ActionCableBase {
     this.setState({[e.target.name]: e.target.value})
   }
 
-  handleSubmit = () => {
-    this.subscription.send({id: this.state.help.id, message: this.state.message});
-    this.setState({message: ''})
+  handleSubmit = async () => {
+    const { message, help } = this.state;
+    try {
+      this.subscription.send({id: this.state.help.id, message});
+      const saveChat = await chatService.create({
+        help_id: help.id,
+        user_id: chatService.getUser().id,
+        message
+      })
+  
+      this.setState({ message: '' })
+    } catch (error) {
+      console.log('Something went wrong')
+    }
   }
 
   render() { 
-    const { help } = this.state;
+    const { help, chats } = this.state;
     return (
       <div className="row">
         { help ?
@@ -62,9 +80,31 @@ class HelpDetails extends ActionCableBase {
         </div> 
         }
         <div className="col-md-5">
-          {this.state.messages.map((message, idx) => (
-            <p key={idx}>{message}</p>
-          ))}
+          { chats.length > 0 ? chats.map((chat) => (
+            <div className="row" key={chat.id}>
+            { chat.user_id === userService.getUser().id ? 
+              <React.Fragment>
+                <div className="col-md-6"></div>
+                <div className="col-md-6">
+                  <p style={{ fontSize: '11px', color: 'blue', fontWeight: 'bold' }}>{chat.user.first_name}</p>
+                  <p>{ chat.message }</p>
+                </div>
+              </React.Fragment>
+              :
+              <React.Fragment>
+                <div className="col-md-6">
+                  <p style={{ fontSize: '11px', color: 'red', fontWeight: 'bold' }}>{chat.user.first_name}</p>
+                  <p>{ chat.message }</p>
+                </div>
+                <div className="col-md-6"></div>
+              </React.Fragment>
+            }
+            </div>
+          )):
+          <React.Fragment>
+            <Skeleton height={20}/>
+            <Skeleton height={20}/>
+          </React.Fragment>}
           <div className="form-group">
             <label htmlFor="message" className="control-label"></label>
             <textarea name="message" id="message" value={this.state.message} rows="5" className="form-control" onChange={this.handleChange}></textarea>

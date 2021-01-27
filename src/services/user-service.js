@@ -63,11 +63,6 @@ class UserService extends BaseService {
     }
   }
 
-  getUser = () => {
-    const state = store.getState();
-    return state.user.length < 1 ? false : state.user
-  }
-
   profile = async () => {
     if (this.getUser()) {
       return this.getUser();
