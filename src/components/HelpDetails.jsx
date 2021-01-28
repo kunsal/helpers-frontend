@@ -4,8 +4,12 @@ import Skeleton from 'react-loading-skeleton';
 import ActionCableBase from './ActionCableBase';
 import chatService from '../services/chat-service';
 import userService from '../services/user-service';
-import showLove from '../images/show-love.svg';
+import verified from '../images/verified.svg';
+import cancel from '../images/cancel.svg';
 import Helmet from 'react-helmet';
+import moment from 'moment';
+import GoogleMapReact from 'google-map-react';
+import Marker from './common/Marker';
 
 class HelpDetails extends ActionCableBase {
   state = { help: false, message: '', chats: [], typing: '' }
@@ -82,12 +86,17 @@ class HelpDetails extends ActionCableBase {
     const user = userService.getUser();
     return (
       <div className="container">
-      <div className="row" >
+      <div className="row page-container">
         <Helmet>
           <title>{help && help.title}</title>
           
           <style type="text/css">
           {`
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@900&display=swap');
+            .page-container {
+              padding-top: 10px;
+            }
+
             .chat-box {
               width: 45%;
               border-radius: 0 10px;
@@ -117,6 +126,14 @@ class HelpDetails extends ActionCableBase {
             .volunteer .user-name {
               color: red;
             }
+            .help-title {
+              font-family: "Poppins"
+            }
+            .requester {
+              font-family: "Poppins";
+              font-weight: 400;
+              color: #666;
+            }
           `}
           </style>
           
@@ -125,8 +142,36 @@ class HelpDetails extends ActionCableBase {
         {/* <img src={showLove} alt="banner" className="w-100" height=""/> */}
         { help ?
         <React.Fragment>
-          <h2 className="text-center">{help.title}</h2>
-          <p>By: {help.user.first_name}</p>
+          <div className="row">
+            <div className="col-12">
+              <div style={{ height: '200px', width: '100%' }}>
+                <GoogleMapReact
+                  bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
+                  defaultCenter={[help.location.split(',')[0], help.location.split(',')[1]]}
+                  defaultZoom={this.state.zoom}
+                  yesIWantToUseGoogleMapApiInternals
+                  onGoogleApiLoaded={({map, maps}) => console.log(map, maps)}
+                  draggable={false}
+                >
+                  <Marker lat={help.location.split(',')[0]} lng={help.location.split(',')[1]} help={help} /> 
+          
+                </GoogleMapReact>
+
+              </div>
+            </div>
+            <div className="col-md-10">
+              <h2 className="help-title">{help.title}</h2>
+            </div>
+            <div className="col-md-2 text-center">
+              <img src={ help.status == 0 ? cancel : verified } alt="" width="50" />
+              <p>{ help.status == 0 ? 'Unfulfilled' : 'Fulfilled' }</p>
+            </div>
+          </div>
+          
+          <p className="">Posted By: <span className="requester">{help.user.first_name} {help.user.last_name}</span><span className="mr-auto"></span> </p>
+          <p className="">Category: <span className="requester">{help.category.name}</span><span className="mr-auto"></span></p>
+          <p className="">Posted: <span className="requester">{moment(help.created_at).fromNow()}</span><span className="mr-auto"></span></p>
+          
           <p>{help.description}</p>
         </React.Fragment>
         :
