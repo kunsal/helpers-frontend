@@ -106,15 +106,15 @@ class HelpDetails extends ActionCableBase {
               background: #fde0e0;
               border: 1px solid #fde0e0;
             }
-            .username {
+            .user-name {
               font-size: 10px;
               font-weight: bold;
               margin-bottom: -7px; 
             }
-            .beneficiary .username {
+            .beneficiary .user-name {
               color: green;
             }
-            .volunteer .username {
+            .volunteer .user-name {
               color: red;
             }
           `}
@@ -152,14 +152,14 @@ class HelpDetails extends ActionCableBase {
               <React.Fragment>
                 <div className="col-md-6"></div>
                 <div className="col-md-6 chat-box beneficiary">
-                  <p className="username">You</p>
+                  <p className="user-name">You</p>
                   <p>{ chat.message }</p>
                 </div>
               </React.Fragment>
               :
               <React.Fragment>
                 <div className="col-md-6 chat-box volunteer">
-                  <p className="username">{chat.user.first_name}{chat.user_id === help.user_id && `(requester)`}</p>
+                  <p className="user-name">{chat.user.first_name} {chat.user.last_name}{chat.user_id === help.user_id && `(requester)`}</p>
                   <p>{ chat.message }</p>
                 </div>
                 <div className="col-md-6"></div>
