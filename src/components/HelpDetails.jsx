@@ -4,9 +4,11 @@ import Skeleton from 'react-loading-skeleton';
 import ActionCableBase from './ActionCableBase';
 import chatService from '../services/chat-service';
 import userService from '../services/user-service';
+import showLove from '../images/show-love.svg';
+import Helmet from 'react-helmet';
 
 class HelpDetails extends ActionCableBase {
-  state = { help: false, message: '', chats: [] }
+  state = { help: false, message: '', chats: [], typing: '' }
 
   async componentDidMount() {
     try {
@@ -25,6 +27,15 @@ class HelpDetails extends ActionCableBase {
             this.setState({chats: [...this.state.chats, data]});
           }
         }
+      });
+      this.notification = this.consumer.subscriptions.create({channel: 'NotificationChannel', id: help.id}, {
+        connected: () => {
+          console.log('connected to notification')
+        },
+        received: data => {
+          console.log(data);
+          this.setState({typing: data.message})
+        }
       })
     } catch (error) {
       console.log(error);
@@ -39,7 +50,7 @@ class HelpDetails extends ActionCableBase {
     const { message, help } = this.state;
     try {
       this.subscription.send({id: this.state.help.id, message});
-      const saveChat = await chatService.create({
+      await chatService.create({
         help_id: help.id,
         user_id: chatService.getUser().id,
         message
@@ -51,49 +62,104 @@ class HelpDetails extends ActionCableBase {
     }
   }
 
+  handleKeyPress = async e => {
+    this.notification.send({key: 'typing'})
+    if (e.charCode === 13 && !e.ctrlKey) {
+      await this.handleSubmit();
+      this.notification.send({key: ''})
+    } 
+    if (this.state.message === '') {
+      this.setState({ typing: ''})
+    }
+  }
+
+  handleKeyUp = async e => {
+    this.notification.send({key: 'not typing'})
+  }
+
   render() { 
-    const { help, chats } = this.state;
+    const { help, chats, typing } = this.state;
+    const user = userService.getUser();
     return (
-      <div className="row">
+      <div className="container">
+      <div className="row" >
+        <Helmet>
+          <title>{help && help.title}</title>
+          
+          <style type="text/css">
+          {`
+            .chat-box {
+              width: 45%;
+              border-radius: 0 10px;
+              margin-bottom: 5px;
+            }
+            .chat-container {
+              height: 78vh;  
+              overflow: scroll;
+              background: #fcfcfc;
+            }
+            .beneficiary {
+              background: #e0fde4;
+              border: 1px solid #e0fde4;
+            }
+            .volunteer {
+              background: #fde0e0;
+              border: 1px solid #fde0e0;
+            }
+            .username {
+              font-size: 10px;
+              font-weight: bold;
+              margin-bottom: -7px; 
+            }
+            .beneficiary .username {
+              color: green;
+            }
+            .volunteer .username {
+              color: red;
+            }
+          `}
+          </style>
+          
+        </Helmet>
+        <div className="col-md-5">
+        {/* <img src={showLove} alt="banner" className="w-100" height=""/> */}
         { help ?
-        <div className="col-md-7">
-          <img src={help.user.government_id} alt="" width="250"/>
-          <h2>{help.title}</h2>
+        <React.Fragment>
+          <h2 className="text-center">{help.title}</h2>
           <p>By: {help.user.first_name}</p>
           <p>{help.description}</p>
-        </div>
+        </React.Fragment>
         :
-        <div className="col-md-7">
-          <div className="row">
-            <div className="col-md-2">
-              <Skeleton circle={true} height={70} width={70} />
-            </div>
-            <div className="col-md-offset-2 col-md-8">
-              <Skeleton height={20}/>
-              <br/>
-              <Skeleton height={20}/>
-              <Skeleton height={20}/>
-              <Skeleton height={20}/>
-            </div>
+        <div className="row">
+          <div className="col-md-2">
+            <Skeleton circle={true} height={70} width={70} />
           </div>
-          
-        </div> 
+          <div className="col-md-offset-2 col-md-8">
+            <Skeleton height={20}/>
+            <br/>
+            <Skeleton height={20}/>
+            <Skeleton height={20}/>
+            <Skeleton height={20}/>
+          </div>
+        </div>
         }
-        <div className="col-md-5">
+        </div>
+        <div className="col-md-7">
+          <div className="chat-container">
           { chats.length > 0 ? chats.map((chat) => (
             <div className="row" key={chat.id}>
-            { chat.user_id === userService.getUser().id ? 
+            { chat.user_id === user.id ? 
               <React.Fragment>
                 <div className="col-md-6"></div>
-                <div className="col-md-6">
-                  <p style={{ fontSize: '11px', color: 'blue', fontWeight: 'bold' }}>{chat.user.first_name}</p>
+                <div className="col-md-6 chat-box beneficiary">
+                  <p className="username">You</p>
                   <p>{ chat.message }</p>
                 </div>
               </React.Fragment>
               :
               <React.Fragment>
-                <div className="col-md-6">
-                  <p style={{ fontSize: '11px', color: 'red', fontWeight: 'bold' }}>{chat.user.first_name}</p>
+                <div className="col-md-6 chat-box volunteer">
+                  <p className="username">{chat.user.first_name}{chat.user_id === help.user_id && `(requester)`}</p>
                   <p>{ chat.message }</p>
                 </div>
                 <div className="col-md-6"></div>
@@ -101,17 +167,32 @@ class HelpDetails extends ActionCableBase {
             }
             </div>
           )):
-          <React.Fragment>
-            <Skeleton height={20}/>
-            <Skeleton height={20}/>
-          </React.Fragment>}
-          <div className="form-group">
-            <label htmlFor="message" className="control-label"></label>
-            <textarea name="message" id="message" value={this.state.message} rows="5" className="form-control" onChange={this.handleChange}></textarea>
+            <React.Fragment>
+              <Skeleton height={20}/>
+              <Skeleton height={20}/>
+            </React.Fragment>}
           </div>
-          <button onClick={this.handleSubmit} className="btn btn-primary">Submit</button>
+          <div className="row">
+            <div className="col-md-12">
+              <div className="form-group">
+                {typing !== '' && <p class="text-info">{typing}</p>}
+                <textarea 
+                  name="message" 
+                  placeholder="Your message here..." 
+                  id="message" value={this.state.message} 
+                  className="form-control" 
+                  onChange={this.handleChange} 
+                  onKeyDown={this.handleKeyPress}
+                  onKeyUp={this.handleKeyUp}
+                ></textarea>
+              </div>
+              <button onClick={this.handleSubmit} className="btn btn-primary">Submit</button>
+            </div>
+          </div>
         </div>
       </div>
+      </div>
+      
       
     )
   }
