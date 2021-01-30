@@ -10,6 +10,7 @@
     "actioncable": "^5.2.4",
     "axios": "^0.21.1",
     "bootstrap": "^5.0.0-beta1",
+    "gh-pages": "^3.1.0",
     "google-map-react": "^2.1.9",
     "moment": "^2.29.1",
     "react": "^17.0.1",
@@ -26,6 +27,8 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
