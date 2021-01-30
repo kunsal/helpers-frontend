@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import helpService from '../services/help-service';
 import Skeleton from 'react-loading-skeleton';
 import ActionCableBase from './ActionCableBase';

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
 import Alert from './common/Alert';
 import helpService from '../services/help-service';

@@ -1,10 +1,10 @@
-import React, { Component, useEffect, useState } from 'react';
+import React from 'react';
 import userService from '../services/user-service';
 import GoogleMapReact from 'google-map-react';
 import Marker from './common/Marker';
-import helpService from '../services/help-service';
+import ActionCableBase from './ActionCableBase';
 
-class Home extends Component {
+class Home extends ActionCableBase {
   state = {
     user: null,
     center: {
@@ -17,8 +17,14 @@ class Home extends Component {
 
   async componentDidMount() {
     this.setState({user: userService.getUser()});
-    const helps = await helpService.getHelps();
-    this.setState({helps})
+    this.notification = this.consumer.subscriptions.create({channel: 'HelpListChannel'}, {
+      connected: () => {
+        console.log('connected to help list channel')
+      },
+      received: data => {
+        this.setState({helps: data.helps})
+      }
+    })
   }
  
   render() {
@@ -48,6 +54,7 @@ class Home extends Component {
           </div>
         </div>
         <div className="col-md-4 col-sm-12">
+          <p>Unfulfilled Helps: {helps.length}</p>
           {helps && helps.length > 0 ? helps.map(help => (
           <div className="card mb-3" key={help.id}>
             <div className="card-header" style={{ backgroundColor: help.category.color }}>
@@ -65,8 +72,6 @@ class Home extends Component {
           <div className="alert alert-info">No help found</div>}
         </div>
       </div>
-      // Important! Always set the container height explicitly
-      
     );
   }
   
