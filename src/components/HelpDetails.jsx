@@ -12,12 +12,17 @@ import GoogleMapReact from 'google-map-react';
 import Marker from './common/Marker';
 
 class HelpDetails extends ActionCableBase {
-  state = { help: false, message: '', chats: [], typing: '' }
+  constructor() {
+    super();
+    this.chatBottom = React.createRef();
+  }
+
+  state = { help: false, message: '', chats: [], typing: '', fulfilled: false }
 
   async componentDidMount() {
     try {
       const help = await helpService.getHelp(this.props.match.params.id)
-      this.setState({help})
+      this.setState({help, fulfilled: help.status})
       this.subscription = this.consumer.subscriptions.create({channel: 'ChatsChannel', id: help.id }, {
         connected: () => {
           console.log('Connection successful')
@@ -26,6 +31,7 @@ class HelpDetails extends ActionCableBase {
           //console.log(data);
           if (data.initial !== undefined) {
             this.setState({chats: JSON.parse(data.chats)})
+            
           } else {
             data = JSON.parse(data)
             this.setState({chats: [...this.state.chats, data]});
@@ -37,8 +43,18 @@ class HelpDetails extends ActionCableBase {
           console.log('connected to notification')
         },
         received: data => {
-          console.log(data);
+          // console.log(data);
           this.setState({typing: data.message})
+        }
+      })
+
+      this.status = this.consumer.subscriptions.create({channel: 'StatusChannel', id: help.id}, {
+        connected: () => {
+          console.log('connected to status channel')
+        },
+        received: data => {
+          // console.log(data);
+          this.setState({fulfilled: data.status})
         }
       })
     } catch (error) {
@@ -47,7 +63,7 @@ class HelpDetails extends ActionCableBase {
   }
 
   handleChange = (e) => {
-    this.setState({[e.target.name]: e.target.value})
+    this.setState({[e.target.name]: e.target.value});
   }
 
   handleSubmit = async () => {
@@ -59,7 +75,7 @@ class HelpDetails extends ActionCableBase {
         user_id: chatService.getUser().id,
         message
       })
-  
+      this.chatBottom.current.scrollIntoView();
       this.setState({ message: '' })
     } catch (error) {
       console.log('Something went wrong')
@@ -67,14 +83,15 @@ class HelpDetails extends ActionCableBase {
   }
 
   handleKeyPress = async e => {
-    this.notification.send({key: 'typing'})
     if (e.charCode === 13 && !e.ctrlKey) {
+      this.notification.send({key: 'typing'})
+      console.log('Control clicked');
       await this.handleSubmit();
-      this.notification.send({key: ''})
+      // this.notification.send({key: ''})
     } 
-    if (this.state.message === '') {
-      this.setState({ typing: ''})
-    }
+    // if (this.state.message === '') {
+    //   this.setState({ typing: ''})
+    // }
   }
 
   handleKeyUp = async e => {
@@ -82,7 +99,7 @@ class HelpDetails extends ActionCableBase {
   }
 
   render() { 
-    const { help, chats, typing } = this.state;
+    const { help, chats, typing, fulfilled } = this.state;
     const user = userService.getUser();
     return (
       <div className="container">
@@ -103,6 +120,7 @@ class HelpDetails extends ActionCableBase {
               margin-bottom: 5px;
             }
             .chat-container {
+              position: relative;
               height: 78vh;  
               overflow: scroll;
               background: #fcfcfc;
@@ -134,6 +152,10 @@ class HelpDetails extends ActionCableBase {
               font-weight: 400;
               color: #666;
             }
+            // .chat-base {
+            //   position: relative;
+            //   bottom: 0;
+            // }
           `}
           </style>
           
@@ -163,8 +185,8 @@ class HelpDetails extends ActionCableBase {
               <h2 className="help-title">{help.title}</h2>
             </div>
             <div className="col-md-2 text-center">
-              <img src={ help.status == 0 ? cancel : verified } alt="" width="50" />
-              <p>{ help.status == 0 ? 'Unfulfilled' : 'Fulfilled' }</p>
+              <img src={ fulfilled ? verified : cancel } alt="" width="50" />
+              <p>{ fulfilled ? 'Fulfilled' : 'Unfulfilled' }</p>
             </div>
           </div>
           
@@ -176,15 +198,24 @@ class HelpDetails extends ActionCableBase {
         </React.Fragment>
         :
         <div className="row">
-          <div className="col-md-2">
-            <Skeleton circle={true} height={70} width={70} />
+          <div className="col-md-12">
+            <Skeleton height={200} />
           </div>
+
           <div className="col-md-offset-2 col-md-8">
-            <Skeleton height={20}/>
+            <div className="row">
+              <div className="col-md-10">
+                <Skeleton height={30} width={150} />
+              </div>
+              <div className="col-md-2">
+                <Skeleton circle={true} height={70} width={70} />
+              </div>
+            </div>
             <br/>
             <Skeleton height={20}/>
             <Skeleton height={20}/>
             <Skeleton height={20}/>
+            <Skeleton height={50}/>
           </div>
         </div>
         }
@@ -213,11 +244,12 @@ class HelpDetails extends ActionCableBase {
             </div>
           )):
             <React.Fragment>
-              <Skeleton height={20}/>
-              <Skeleton height={20}/>
+              <div className="alert alert-info">Type a message to engage requester</div>
             </React.Fragment>}
+            <div ref={this.chatBottom}></div>
           </div>
           <div className="row">
+            {!fulfilled &&
             <div className="col-md-12">
               <div className="form-group">
                 {typing !== '' && <p class="text-info">{typing}</p>}
@@ -233,10 +265,11 @@ class HelpDetails extends ActionCableBase {
               </div>
               <button onClick={this.handleSubmit} className="btn btn-primary">Submit</button>
             </div>
+            }
           </div>
         </div>
       </div>
-      </div>
+    </div>
       
       
     )

@@ -37,19 +37,19 @@ class Home extends Component {
               onDragEnd={(map) => console.log(map)}
             >
               {
-                helps.map(help => {
+                helps && helps.map((help) => {
                   let coordinates = help.location.split(',');
                   let lng = coordinates[0];
                   let lat = coordinates[1];
-                  return <Marker yesIWantToUseGoogleMapApiInternals draggable lat={lng} lng={lat} help={help} /> 
+                  return <Marker yesIWantToUseGoogleMapApiInternals draggable lat={lng} lng={lat} help={help} key={help.id} /> 
                 })
               }
             </GoogleMapReact>
           </div>
         </div>
         <div className="col-md-4 col-sm-12">
-          {helps.length > 0 ? helps.map(help => (
-          <div className="card mb-3">
+          {helps && helps.length > 0 ? helps.map(help => (
+          <div className="card mb-3" key={help.id}>
             <div className="card-header" style={{ backgroundColor: help.category.color }}>
               {help.category.name}
             </div>

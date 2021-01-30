@@ -5,7 +5,7 @@ import actioncable from 'actioncable';
 class ActionCableBase extends Component {
   constructor() {
     super();
-    this.consumer = actioncable.createConsumer(`ws://localhost:8800/cable?token=${userService.token()}`)
+    this.consumer = actioncable.createConsumer(`${process.env.REACT_APP_SOCKET_URL}/cable?token=${userService.token()}`)
   }
   
   render() { 
