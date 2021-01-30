@@ -1,30 +1,30 @@
 {
   "files": {
-    "main.css": "/static/css/main.ab7136cd.chunk.css",
-    "main.js": "/static/js/main.be8f1023.chunk.js",
-    "main.js.map": "/static/js/main.be8f1023.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.1ccd059a.js",
-    "runtime-main.js.map": "/static/js/runtime-main.1ccd059a.js.map",
-    "static/css/2.81057f45.chunk.css": "/static/css/2.81057f45.chunk.css",
-    "static/js/2.052d3298.chunk.js": "/static/js/2.052d3298.chunk.js",
-    "static/js/2.052d3298.chunk.js.map": "/static/js/2.052d3298.chunk.js.map",
-    "static/js/3.f08af9d0.chunk.js": "/static/js/3.f08af9d0.chunk.js",
-    "static/js/3.f08af9d0.chunk.js.map": "/static/js/3.f08af9d0.chunk.js.map",
-    "index.html": "/index.html",
-    "static/css/2.81057f45.chunk.css.map": "/static/css/2.81057f45.chunk.css.map",
-    "static/css/main.ab7136cd.chunk.css.map": "/static/css/main.ab7136cd.chunk.css.map",
-    "static/js/2.052d3298.chunk.js.LICENSE.txt": "/static/js/2.052d3298.chunk.js.LICENSE.txt",
-    "static/media/cancel.09453510.svg": "/static/media/cancel.09453510.svg",
-    "static/media/give-box.1e719e61.svg": "/static/media/give-box.1e719e61.svg",
-    "static/media/group-chat.e24feb6f.svg": "/static/media/group-chat.e24feb6f.svg",
-    "static/media/red-marker.f96aeb96.svg": "/static/media/red-marker.f96aeb96.svg",
-    "static/media/verified.7ecb90a5.svg": "/static/media/verified.7ecb90a5.svg"
+    "main.css": "/helpers-frontend/static/css/main.ab7136cd.chunk.css",
+    "main.js": "/helpers-frontend/static/js/main.d112777f.chunk.js",
+    "main.js.map": "/helpers-frontend/static/js/main.d112777f.chunk.js.map",
+    "runtime-main.js": "/helpers-frontend/static/js/runtime-main.d06f30cc.js",
+    "runtime-main.js.map": "/helpers-frontend/static/js/runtime-main.d06f30cc.js.map",
+    "static/css/2.81057f45.chunk.css": "/helpers-frontend/static/css/2.81057f45.chunk.css",
+    "static/js/2.052d3298.chunk.js": "/helpers-frontend/static/js/2.052d3298.chunk.js",
+    "static/js/2.052d3298.chunk.js.map": "/helpers-frontend/static/js/2.052d3298.chunk.js.map",
+    "static/js/3.f08af9d0.chunk.js": "/helpers-frontend/static/js/3.f08af9d0.chunk.js",
+    "static/js/3.f08af9d0.chunk.js.map": "/helpers-frontend/static/js/3.f08af9d0.chunk.js.map",
+    "index.html": "/helpers-frontend/index.html",
+    "static/css/2.81057f45.chunk.css.map": "/helpers-frontend/static/css/2.81057f45.chunk.css.map",
+    "static/css/main.ab7136cd.chunk.css.map": "/helpers-frontend/static/css/main.ab7136cd.chunk.css.map",
+    "static/js/2.052d3298.chunk.js.LICENSE.txt": "/helpers-frontend/static/js/2.052d3298.chunk.js.LICENSE.txt",
+    "static/media/cancel.09453510.svg": "/helpers-frontend/static/media/cancel.09453510.svg",
+    "static/media/give-box.1e719e61.svg": "/helpers-frontend/static/media/give-box.1e719e61.svg",
+    "static/media/group-chat.e24feb6f.svg": "/helpers-frontend/static/media/group-chat.e24feb6f.svg",
+    "static/media/red-marker.f96aeb96.svg": "/helpers-frontend/static/media/red-marker.f96aeb96.svg",
+    "static/media/verified.7ecb90a5.svg": "/helpers-frontend/static/media/verified.7ecb90a5.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.1ccd059a.js",
+    "static/js/runtime-main.d06f30cc.js",
     "static/css/2.81057f45.chunk.css",
     "static/js/2.052d3298.chunk.js",
     "static/css/main.ab7136cd.chunk.css",
-    "static/js/main.be8f1023.chunk.js"
+    "static/js/main.d112777f.chunk.js"
   ]
 }
