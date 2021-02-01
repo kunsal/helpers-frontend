@@ -58,5 +58,5 @@
     "react-test-renderer": "^17.0.1",
     "redux-devtools-extension": "^2.13.8"
   },
-  "homepage": "https://kunsal.github.io/helpers"
+  "homepage": "https://kunsal.github.io/helpers-frontend"
 }
