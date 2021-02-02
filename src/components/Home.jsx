@@ -35,6 +35,12 @@ class Home extends ActionCableBase {
       }
     })
   }
+
+  handleBoundsChange = async (center, zoom, bounds, marginBounds) => {
+    const [topLat, leftLong, bottomLat, rightLong] = bounds;
+    const helps = await helpService.getHelpsByCoordinates(topLat, leftLong, bottomLat, rightLong);
+    if (helps) this.setState({helps});
+  }
  
   render() {
     const { helps, showModal, help } = this.state;
@@ -94,9 +100,7 @@ class Home extends ActionCableBase {
               defaultZoom={this.state.zoom}
               mapTypId="SATELLITE"
               yesIWantToUseGoogleMapApiInternals
-              onDragEnd={(map) => {
-                console.log(map.getBounds())
-              }}
+              onBoundsChange={this.handleBoundsChange}
             >
               {
                 helps && helps.map((help) => {

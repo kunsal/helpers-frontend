@@ -33,7 +33,27 @@ class HelpService extends BaseService {
           Authorization: `Bearer ${this.token()}`
         }
       });
-      console.log(response);
+      
+      if (response.status === 200) {
+        return response.data;
+      } 
+    } catch (error) {
+      console.log(error.response)
+    }
+  }
+
+  async getHelpsByCoordinates(tl, ll, bl, rl) {
+    try {
+      const response = await axios.get(`
+        ${this.endpoint}/helps?coordinates=true&leftLong=${ll}&rightLong=${rl}&topLat=${tl}&bottomLat=${bl}`, 
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: `Bearer ${this.token()}`
+        }
+      });
+      
       if (response.status === 200) {
         return response.data;
       } 
