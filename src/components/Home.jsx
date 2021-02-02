@@ -68,6 +68,7 @@ class Home extends ActionCableBase {
             font-size: 18px;
             letter-spacing: 5px;
             color: #6b55e4;
+            font-weight: bold;
           }
           .stat-value {
             font-size: 50px;
@@ -82,11 +83,29 @@ class Home extends ActionCableBase {
             color: #666;
 
           }
-
+          .label.category {
+            padding: 2px 8px;
+            color: white; 
+            border-radius: 7px; 
+            font-weight: bold
+          }
           @media screen and (max-width: 759px) {
             #map {
               height: 50vh;
             }
+          }
+          .modal-header {
+            background-color: #6b55e4;
+            color: #fff;
+          }
+          .modal-title {
+            font-size: 16px;
+            letter-spacing: 2px;
+          }
+          .modal .description {
+            font-size: 14px;
+            text-align: justify;
+            overflow: wrap
           }
           
         `}</style>
@@ -119,15 +138,12 @@ class Home extends ActionCableBase {
           <div className="help-list">
             {helps && helps.length > 0 ? helps.map(help => (
             <div className="card mb-3" key={help.id}>
-              <div className="card-header" style={{  }}>
+              <div className="card-header">
                 {help.title}
               </div>
               <div className="card-body">
                 <div className="row meta">
-                  <div className="col-md-6"><span className="label" style={{ 
-                    backgroundColor: help.category.color, padding: '2px 8px', 
-                    color: 'white', borderRadius: '7px', fontWeight: 'bold'
-                  }}>{help.category.name}</span></div>
+                  <div className="col-md-6"><span className="label category" style={{ backgroundColor: help.category.color }}>{help.category.name}</span></div>
                   <div className="col-md-6 text-end">Posted <span style={{ fontWeight: 'bold' }}>
                     {moment(help.created_at).fromNow()}
                   </span></div>
@@ -158,14 +174,27 @@ class Home extends ActionCableBase {
               <Modal.Title>{ help.title }</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              { help.description }
+              <div className="row">
+                <div className="col-3" style={{ fontSize: '13px', lineHeight: 1}}>
+                  <p><span className="label category" style={{ backgroundColor: help.category.color }}>{help.category.name}</span></p>
+                  <p>By <strong>{ help.user.first_name } { help.user.last_name }</strong></p>
+                  <p><span style={{ fontWeight: 'bold' }}>
+                    {moment(help.created_at).fromNow()}
+                  </span>
+                  </p> 
+                </div>
+                <div className="col-9 description">
+                  { help.description }
+                </div>
+              </div>
+              
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={this.handleClose}>
                 Close
               </Button>
               <Link to={`/help/${help.id}`} className="btn btn-primary">
-              { help.user_id === this.state.user.id ? 'View Offers' : 'Offer Help' }
+                { help.user_id === this.state.user.id ? 'View Offers' : 'Offer Help' }
               </Link>
             </Modal.Footer>
           </>
