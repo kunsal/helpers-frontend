@@ -44,7 +44,6 @@ class Home extends ActionCableBase {
  
   render() {
     const { helps, showModal, help } = this.state;
-
     return (
       <React.Fragment>
        <Helmet>
@@ -117,7 +116,6 @@ class Home extends ActionCableBase {
               bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
               defaultCenter={this.state.center}
               defaultZoom={this.state.zoom}
-              mapTypId="SATELLITE"
               yesIWantToUseGoogleMapApiInternals
               onBoundsChange={this.handleBoundsChange}
             >

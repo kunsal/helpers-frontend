@@ -152,49 +152,41 @@ class HelpDetails extends ActionCableBase {
               font-weight: 400;
               color: #666;
             }
-            // .chat-base {
-            //   position: relative;
-            //   bottom: 0;
-            // }
+            
           `}
           </style>
           
         </Helmet>
         <div className="col-md-5">
-        {/* <img src={showLove} alt="banner" className="w-100" height=""/> */}
         { help ?
         <React.Fragment>
           <div className="row">
-            <div className="col-12">
-              <div style={{ height: '200px', width: '100%' }}>
+            <div className="col-md-12">
+              <img src={help.user.government_id} height="200" style={{ height: '30vh', maxWidth:'100%', marginBottom: '20px' }} />
+              {/* <div style={{ height: '30vh' }}>
                 <GoogleMapReact
                   bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
-                  defaultCenter={[help.location.split(',')[0], help.location.split(',')[1]]}
-                  defaultZoom={this.state.zoom}
-                  yesIWantToUseGoogleMapApiInternals
-                  onGoogleApiLoaded={({map, maps}) => console.log(map, maps)}
-                  draggable={false}
+                  defaultCenter={{ lat: help.lat, long: help.long}}
+                  defaultZoom={ 11 }
                 >
                   <Marker lat={help.lat} lng={help.long} help={help} /> 
-          
                 </GoogleMapReact>
-
-              </div>
+              </div> */}
             </div>
-            <div className="col-md-10">
-              <h2 className="help-title">{help.title}</h2>
+            <div className="col-md-9">
+              <h4 className="help-title" style={{ fontSize: '18px' }}>{help.title}</h4>
             </div>
-            <div className="col-md-2 text-center">
-              <img src={ fulfilled ? verified : cancel } alt="" width="50" />
-              <p>{ fulfilled ? 'Fulfilled' : 'Unfulfilled' }</p>
+            <div className="col-md-3 text-center">
+              <img src={ fulfilled ? verified : cancel } width="30" />
+              <p className="text-center" style={{ fontSize: '12px' }}>{ fulfilled ? <span className="text-primary">Fulfilled</span> : <span className="text-danger">Unfulfilled</span> }</p>
             </div>
           </div>
           
-          <p className="">Posted By: <span className="requester">{help.user.first_name} {help.user.last_name}</span><span className="mr-auto"></span> </p>
-          <p className="">Category: <span className="requester">{help.category.name}</span><span className="mr-auto"></span></p>
-          <p className="">Posted: <span className="requester">{moment(help.created_at).fromNow()}</span><span className="mr-auto"></span></p>
+          <p>Posted By: <span className="requester">{help.user.first_name} {help.user.last_name}</span><span className="mr-auto"></span> </p>
+          <p>Category: <span className="requester">{help.category.name}</span><span className="mr-auto"></span></p>
+          <p>Posted: <span className="requester">{moment(help.created_at).fromNow()}</span><span className="mr-auto"></span></p>
           
-          <p>{help.description}</p>
+          <p style={{ textAlign: 'justify' }}>{help.description}</p>
         </React.Fragment>
         :
         <div className="row">
