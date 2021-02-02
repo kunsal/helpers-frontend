@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import redMarker from "../../images/red-marker.svg";
+import blackMarker from "../../images/black-marker.svg";
 import { Helmet } from "react-helmet";
-import { Modal, Button } from "react-bootstrap";
-import { Link } from 'react-router-dom';
 
 class Marker extends Component {
   state = {
     defaultWidth: 30,
-    show: false,
-    help: null
   };
 
   handleMouseOver = e => {
@@ -19,14 +16,7 @@ class Marker extends Component {
     e.target.width = this.state.defaultWidth;
   };
 
-  handleClose = () => {
-    this.setState({show: false});
-  }
-
   render() {
-    const { show } = this.state;
-    const { help } = this.props;
-
     return (
       <React.Fragment>
         <Helmet>
@@ -37,40 +27,13 @@ class Marker extends Component {
           `}</style>
         </Helmet>
         <img
-          src={redMarker}
+          src={this.props.type === 'blue' ? redMarker : blackMarker}
           width={this.state.defaultWidth}
           className="marker"
           onMouseOver={this.handleMouseOver}
           onMouseLeave={this.handleMouseOut}
-          onClick={() => {
-            this.setState({show: true});
-          }}
+          onClick={this.props.handleOpen}
         />
-
-        <Modal
-          show={show}
-          onHide={this.handleClose}
-          backdrop="static"
-          keyboard={false}
-        >
-        { help && 
-          <>
-            <Modal.Header>
-              <Modal.Title>{ help.title }</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              { help.description }
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={this.handleClose}>
-                Close
-              </Button>
-              <Link to={`/help/${help.id}`} className="btn btn-primary">Offer to help</Link>
-            </Modal.Footer>
-          </>
-        }
-        </Modal>
-
       </React.Fragment>
     );
   }

@@ -41,7 +41,7 @@ class Front extends Component {
       React.cloneElement(child, { cableApp: CableApp.cable, appName })
     );
     return (
-      <main>
+      <main className="">
         <Helmet>
           <title>{appName}</title>
           <style type="text/css">{`
@@ -64,9 +64,8 @@ class Front extends Component {
           `}</style>
         </Helmet>
         <AppNavbar logout={this.handleLogout} user={this.state.user} />
-        <div className="">
+        
          { childrenWithExtraProp }
-        </div>
         
       </main>
     );
