@@ -28,7 +28,7 @@ class Home extends ActionCableBase {
     this.setState({user: userService.getUser()});
     this.notification = this.consumer.subscriptions.create({channel: 'HelpListChannel'}, {
       connected: () => {
-        console.log('connected to help list channel')
+        // console.log('connected to help list channel')
       },
       received: data => {
         this.setState({helps: data.helps})
@@ -92,15 +92,15 @@ class Home extends ActionCableBase {
               bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
               defaultCenter={this.state.center}
               defaultZoom={this.state.zoom}
+              mapTypId="SATELLITE"
               yesIWantToUseGoogleMapApiInternals
-              
+              onDragEnd={(map) => {
+                console.log(map.getBounds())
+              }}
             >
               {
                 helps && helps.map((help) => {
-                  let coordinates = help.location.split(',');
-                  let lng = coordinates[0];
-                  let lat = coordinates[1];
-                  return <Marker lat={lng} lng={lat} handleOpen={() => this.handleModalOpen(help)} key={help.id} type={help.category.color} /> 
+                  return <Marker lat={help.lat} lng={help.long} handleOpen={() => this.handleModalOpen(help)} key={help.id} type={help.category.color} /> 
                 })
               }
             </GoogleMapReact>

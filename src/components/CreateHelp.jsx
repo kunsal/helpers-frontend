@@ -12,33 +12,29 @@ class CreateHelp extends ActionCableBase {
     title: '',
     category: '',
     description: '',
-    location: '',
+    long: '',
+    lat: '',
     hasError: false,
     message: "",
     loading: false
   }
 
   async componentDidMount() {
-    console.log('Props from child', this.props);
     const categories = await helpService.categories();
     this.setState({categories});
     this.subscription = this.consumer.subscriptions.create({channel: 'HelpsChannel', id: 1 }, {
       received: (data) => {
-        console.log(data);
-      },
-      away: () => {
-
+        // console.log(data);
       }
     });
   }
 
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value })
-    // this.subscription.send({message: e.target.value})
   }
 
   handleFormSubmit = async (e) => {
-    const {title, category, description, location} = this.state;
+    const {title, category, description, long, lat} = this.state;
     this.setState({ loading: true })
     if (title === "") {
       this.setState({ hasError: true, message: "Title is required" });
@@ -46,24 +42,24 @@ class CreateHelp extends ActionCableBase {
       this.setState({ hasError: true, message: "Category is required" });
     } else if (description === '') {
       this.setState({ hasError: true, message: "Description is required" });
-    } else if (location === '') {
-      this.setState({ hasError: true, message: "Location is required" });
+    } else if (long === '') {
+      this.setState({ hasError: true, message: "Longitude is required" });
+    } else if (lat === '') {
+      this.setState({ hasError: true, message: "Latitude is required" });
     } else {
       this.setState({ hasError: false, message: "" });
       try {
         const response = await helpService.create({
-          title, category_id: category, description, location
+          title, category_id: category, description, long, lat
         });
         //console.log(response);
         if (response.status === 201) {
-          console.log('success');
           this.setState({
             message: 'Help created successfully.',
-            title: '', category: '', description: '', location: '',
+            title: '', category: '', description: '', long: '', lat: '',
             loading: false
           })
         } else {
-          console.log('Here we are');
           let errorMessage = '';
           let errors = response.data;
           for (let key in errors) {
@@ -81,7 +77,7 @@ class CreateHelp extends ActionCableBase {
   }
 
   render() {
-    const {title, category, description, location, categories, hasError, message, loading} = this.state;
+    const {title, category, description, long, lat, categories, hasError, message, loading} = this.state;
 
     let messageClasses = "alert";
     if (hasError) messageClasses += " alert-danger";
@@ -119,8 +115,13 @@ class CreateHelp extends ActionCableBase {
                   </div>
                   
                   <div className="form-group">
-                    <label className="control-label">Location (Enter long and lat coordinates)</label>
-                    <input className="form-control" value={location} name="location" onChange={this.handleChange} />
+                    <label className="control-label">Longitude</label>
+                    <input className="form-control" value={long} name="long" onChange={this.handleChange} />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="control-label">Latitude</label>
+                    <input className="form-control" value={lat} name="lat" onChange={this.handleChange} />
                   </div>
                   
                   <button 
@@ -130,24 +131,6 @@ class CreateHelp extends ActionCableBase {
                   >
                     {loading ? '...' : 'Submit'}
                   </button>
-                  {/* <div style={{ height: '300px', width: '100%' }}>
-                    <GoogleMapReact
-                      bootstrapURLKeys={{ key: 'AIzaSyCs8rvda2R2CEy9tVbhzimcNl9R8ec54mQ' }}
-                      defaultCenter={[59.95, 30.33]}
-                      defaultZoom={11}
-                      yesIWantToUseGoogleMapApiInternals
-                      //onGoogleApiLoaded={({map, maps}) => console.log(map, maps)}
-                      onDragEnd={(map) => console.log(map)}
-                      onChildMouseEnter={this.handleMarkerHover}
-                      //draggable={false}
-                    >
-                      <Pointer
-                        lat={59.95}
-                        lng={30.33}
-                      />
-                    </GoogleMapReact>
-                  </div> */}
-                
               </div>
             </div>
           </div>

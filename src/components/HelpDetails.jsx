@@ -175,7 +175,7 @@ class HelpDetails extends ActionCableBase {
                   onGoogleApiLoaded={({map, maps}) => console.log(map, maps)}
                   draggable={false}
                 >
-                  <Marker lat={help.location.split(',')[0]} lng={help.location.split(',')[1]} help={help} /> 
+                  <Marker lat={help.lat} lng={help.long} help={help} /> 
           
                 </GoogleMapReact>
 
