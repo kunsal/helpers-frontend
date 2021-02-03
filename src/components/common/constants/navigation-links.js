@@ -11,5 +11,5 @@ export const navigationLinks = [
   {title: 'Login', component: Login, link: '/login', exact: true, useInNavbar: false, transparentNav: true, layout: AuthLayout},
   {title: 'Register', component: Register, link: '/register', exact: true, useInNavbar: false, transparentNav: true, layout: AuthLayout},
   {title: 'Help Details', component: HelpDetails, link: '/help/:id', exact: true, useInNavbar: false, transparentNav: true, layout: Front},
-  {title: 'Seek Help', component: CreateHelp, link: '/help', exact: true, useInNavbar: true, transparentNav: true, layout: Front}
+  {title: 'Help Request', component: CreateHelp, link: '/request-help', exact: true, useInNavbar: true, transparentNav: true, layout: Front}
 ]

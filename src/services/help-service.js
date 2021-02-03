@@ -89,7 +89,6 @@ class HelpService extends BaseService {
           Authorization: `Bearer ${this.token()}`
         }
       });
-      console.log(response);
       if (response.status === 200) {
         return response.data;
       } else {

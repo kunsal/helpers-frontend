@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import Alert from './common/Alert';
 import helpService from '../services/help-service';
 import ActionCableBase from './ActionCableBase';
-
+import people from '../images/people.svg';
 
 class CreateHelp extends ActionCableBase {
 
@@ -87,20 +87,30 @@ class CreateHelp extends ActionCableBase {
       <React.Fragment>
         <Helmet>
           <title>{this.props.appName} - Seek Help</title>
+          <style>
+            {`
+              .page-title {
+                font-size: 22px;
+                letter-spacing: 2px;
+                font-weight: bold;
+              }
+            `}
+          </style>
         </Helmet>
         <div className="container-fluid">
-            <div className="row">
+            <div className="row mt-3">
               <div className="col-md-12">
-                <h2 className="page-title">Seek for New Help</h2>
+                <h2 className="page-title">REQUEST FOR HELP</h2>
               </div>
-              <div className="col-md-8">
+              <div className="col-md-6">
+                <div className="alert alert-info">Complete this form to get your help request to the right people</div>
                 <Alert messageclasses={messageClasses} message={message} />
                 
-                  <div className="form-group">
+                  <div className="form-group mb-2">
                     <label className="control-label">Title</label>
                     <input className="form-control" value={title} name="title" onChange={this.handleChange} />
                   </div>
-                  <div className="form-group">
+                  <div className="form-group mb-2">
                     <label className="control-label">Category</label>
                     <select className="form-control" name="category" onChange={this.handleChange} value={category}>
                       <option>-- Choose a category --</option>
@@ -109,17 +119,17 @@ class CreateHelp extends ActionCableBase {
                       )}
                     </select>
                   </div>
-                  <div className="form-group">
+                  <div className="form-group mb-2">
                     <label className="control-label">Description</label>
                     <textarea className="form-control" value={description} name="description" onChange={this.handleChange} />
                   </div>
                   
-                  <div className="form-group">
+                  <div className="form-group mb-2">
                     <label className="control-label">Longitude</label>
                     <input className="form-control" value={long} name="long" onChange={this.handleChange} />
                   </div>
 
-                  <div className="form-group">
+                  <div className="form-group mb-2">
                     <label className="control-label">Latitude</label>
                     <input className="form-control" value={lat} name="lat" onChange={this.handleChange} />
                   </div>
@@ -131,6 +141,9 @@ class CreateHelp extends ActionCableBase {
                   >
                     {loading ? '...' : 'Submit'}
                   </button>
+              </div>
+              <div className="col-md-6">
+                <img src={people} style={{ width: '100%'}}/>
               </div>
             </div>
           </div>
