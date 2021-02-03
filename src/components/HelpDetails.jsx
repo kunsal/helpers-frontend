@@ -159,15 +159,6 @@ class HelpDetails extends ActionCableBase {
           <div className="row">
             <div className="col-md-12">
               <img src={help.user.government_id} height="200" style={{ height: '30vh', maxWidth:'100%', marginBottom: '20px' }} />
-              {/* <div style={{ height: '30vh' }}>
-                <GoogleMapReact
-                  bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
-                  defaultCenter={{ lat: help.lat, long: help.long}}
-                  defaultZoom={ 11 }
-                >
-                  <Marker lat={help.lat} lng={help.long} help={help} /> 
-                </GoogleMapReact>
-              </div> */}
             </div>
             <div className="col-md-9">
               <h4 className="help-title" style={{ fontSize: '18px' }}>{help.title}</h4>
@@ -237,13 +228,13 @@ class HelpDetails extends ActionCableBase {
             <div ref={this.chatBottom}></div>
           </div>
           <div className="row">
-            {!fulfilled &&
+            
             <div className="col-md-12">
               <div className="form-group">
                 {typing !== '' && <p className="text-info">{typing}</p>}
                 <textarea 
                   name="message" 
-                  placeholder="Your message here..." 
+                  placeholder="Type your message here and hit enter to submit..." 
                   id="message" value={this.state.message} 
                   className="form-control" 
                   onChange={this.handleChange} 
@@ -251,9 +242,9 @@ class HelpDetails extends ActionCableBase {
                   onKeyUp={this.handleKeyUp}
                 ></textarea>
               </div>
-              <button onClick={this.handleSubmit} className="btn btn-primary">Submit</button>
+              {/* <button onClick={this.handleSubmit} className="btn btn-primary">Submit</button> */}
             </div>
-            }
+            
           </div>
         </div>
       </div>
