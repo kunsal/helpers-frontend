@@ -8,8 +8,6 @@ import verified from '../images/verified.svg';
 import cancel from '../images/cancel.svg';
 import Helmet from 'react-helmet';
 import moment from 'moment';
-import GoogleMapReact from 'google-map-react';
-import Marker from './common/Marker';
 
 class HelpDetails extends ActionCableBase {
   constructor() {
@@ -83,14 +81,12 @@ class HelpDetails extends ActionCableBase {
   }
 
   handleKeyPress = async e => {
-    if (e.charCode === 13 && !e.ctrlKey) {
-      this.notification.send({key: 'typing'})
-      console.log('Control clicked');
+    if (e.code == 'Enter' && !e.ctrlKey) {
+      e.preventDefault();
       await this.handleSubmit();
-      // this.notification.send({key: ''})
     } 
-    // if (this.state.message === '') {
-    //   this.setState({ typing: ''})
+    // if (this.state.help.user_id === userService.getUser().id) {
+    //   this.notification.send({key: 'typing'})
     // }
   }
 
@@ -244,7 +240,7 @@ class HelpDetails extends ActionCableBase {
             {!fulfilled &&
             <div className="col-md-12">
               <div className="form-group">
-                {typing !== '' && <p class="text-info">{typing}</p>}
+                {typing !== '' && <p className="text-info">{typing}</p>}
                 <textarea 
                   name="message" 
                   placeholder="Your message here..." 
