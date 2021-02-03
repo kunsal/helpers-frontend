@@ -4,11 +4,14 @@ import {HashRouter as Router, Switch} from 'react-router-dom';
 import { navigationLinks } from "./components/common/constants/navigation-links";
 import LayoutRoute from './components/layouts/LayoutRoute';
 import { Helmet } from 'react-helmet';
+import favicon from './images/fav.png';
 
 function App({props}) {
   return (
     <Router>
       <Helmet>
+        <link rel="icon" type="image/png" sizes="32x32" href={favicon} />
+        <link rel="icon" type="image/png" sizes="16x16" href={favicon} />
         <style>
         {`
           .btn-primary {
