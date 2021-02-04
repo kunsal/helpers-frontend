@@ -81,7 +81,7 @@ class MyHelps extends React.Component {
                 </div>
               ))}
             </div>
-            : (helps && help.length) ? <div className="row">
+            : (helps && helps.length) ? <div className="row">
             {helps.map(help => (
               <div className="col-md-4 mb-3 px-2" key={help.id}>
                 <div className="card">
