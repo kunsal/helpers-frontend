@@ -7,19 +7,28 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "actioncable": "^5.2.4",
+    "axios": "^0.21.1",
     "bootstrap": "^5.0.0-beta1",
+    "gh-pages": "^3.1.0",
+    "google-map-react": "^2.1.9",
+    "moment": "^2.29.1",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.0",
     "react-dom": "^17.0.1",
     "react-helmet": "^6.1.0",
+    "react-loading-skeleton": "^2.1.1",
     "react-popper": "^2.2.4",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "redux": "^4.0.5",
+    "redux-persist": "^6.0.0",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -46,6 +55,8 @@
   "devDependencies": {
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
-    "react-test-renderer": "^17.0.1"
-  }
+    "react-test-renderer": "^17.0.1",
+    "redux-devtools-extension": "^2.13.8"
+  },
+  "homepage": "https://kunsal.github.io/helpers-frontend"
 }

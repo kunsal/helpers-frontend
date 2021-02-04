@@ -1,6 +1,7 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import Login from '../components/Login';
+import Alert from '../components/common/Alert';
 
 describe('Login page', () => {
   let wrapper;
@@ -12,7 +13,7 @@ describe('Login page', () => {
     wrapper;
   });
   it ('should contain a Login header', () => {
-    expect(wrapper.find('h1.page-title').text()).toBe('Login');
+  expect(wrapper.find('h2.page-title').text()).toBe('Login');
   });
 
   it ('should contain a field for email address', () => {
@@ -28,18 +29,36 @@ describe('Login page', () => {
   });
 
   it ('should contain a link to registration page', () => {
-    expect(wrapper.find('a#registration-link').text()).toBe('Already has an account? Login');
+    expect(wrapper.find('#registration-link').text()).toBe('No account? Register');
   });
 
-  it ('should contain a message div', () => {
-    expect(wrapper.find('.alert').length).toEqual(1);
+  describe('Validation', () => {
+    it ('should contain a message div', () => {
+      expect(wrapper.find(Alert).length).toEqual(1);
+    });
+  
+    it('should throw an error if the email field is blank', () => {
+      const alert = shallow(<Alert />)
+      wrapper.find('.submit').simulate('click');
+      expect(alert.find('div').length).toBe(1)
+      
+      // expect(alert.find('div').prop('className')).toBe('alert alert-danger');
+      // expect(alert.find('div').text()).toContain('Email is required');
+    });
+  
+    // it('should throw an error if the password field is blank', () => {
+    //   wrapper.find('[type="email"]').simulate('change', { target: { name: 'email', value: 'kunsal@email.com' }})
+    //   wrapper.find('.submit').simulate('click');
+    //   expect(wrapper.find(Alert).prop('className')).toBe('alert alert-danger');
+    //   expect(wrapper.find(Alert).text()).toBe('Password is required');
+    // });
   });
 
-  it('should throw an error if the email field is blank', async () => {
-    wrapper.find('.submit').simulate('click');
-    // expect(await wrapper.find('.alert')).toHaveAttribute('class', 'alert alert-danger');
-    expect(wrapper.find('.alert').text()).toBe('Email is required');
-  });
+  
 
+  // it('should go to registration page if the registration link is clicked', () => {
+  //   wrapper.find('#registration-link').simulate('click');
+  //   expect(window.location.href).toHaveBeenCalled()
+  // });
 
 });
