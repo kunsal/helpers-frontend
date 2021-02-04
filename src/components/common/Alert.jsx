@@ -18,9 +18,9 @@ const Alert = ({messageclasses, message}) => {
     show && 
     <div className={messageclasses}>
       {content}
-      <button type="button" className="btn-close" data-bs-dismiss="alert" onClick={() => {
+      {/* <button type="button" className="btn-close" data-bs-dismiss="alert" onClick={() => {
         setContent('')
-      }} aria-label="Close"></button>
+      }} aria-label="Close"></button> */}
     </div>
    );
 }

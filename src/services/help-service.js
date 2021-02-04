@@ -80,6 +80,24 @@ class HelpService extends BaseService {
     }
   }
 
+  async myHelps(id) {
+    try {
+      const response = await axios.get(`${this.endpoint}/helps/me`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: `Bearer ${this.token()}`
+        }
+      });
+      
+      if (response.status === 200) {
+        return response.data;
+      } 
+    } catch (error) {
+      console.log(error.response)
+    }
+  }
+
   async categories() {
     try {
       const response = await axios.get(`${this.endpoint}/categories`, {
@@ -97,6 +115,27 @@ class HelpService extends BaseService {
     } catch (error) {
       console.log(error.response)
       return [];
+    }
+  }
+
+  async reopen(id) {
+    try {
+      const response = await axios.post(`${this.endpoint}/helps/reopen`, JSON.stringify({id}), {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: `Bearer ${this.token()}`
+        }
+      });
+
+      
+      return response;
+      
+    } catch (error) {
+      if (error.response.status === 422) {
+        return error.response;
+      }
+      throw new Error(error.response)
     }
   }
 
