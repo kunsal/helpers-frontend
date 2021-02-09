@@ -23,8 +23,17 @@ class Home extends ActionCableBase {
   }
 
   async componentDidMount() {
-    const helps = await helpService.getHelps();
-    if (helps) this.setState({helps});
+    navigator.geolocation.getCurrentPosition( position => {
+      let center = {...this.state.center};
+      center.lat = position.coords.latitude;
+      center.lng = position.coords.longitude;
+      this.setState({center})
+    }, function(error) { 
+      console.log(error);
+    });
+
+    // const helps = await helpService.getHelps();
+    // if (helps) this.setState({helps});
     this.setState({user: userService.getUser()});
     this.notification = this.consumer.subscriptions.create({channel: 'HelpListChannel'}, {
       connected: () => {
@@ -119,6 +128,7 @@ class Home extends ActionCableBase {
               defaultZoom={this.state.zoom}
               mapTypId="SATELLITE"
               yesIWantToUseGoogleMapApiInternals
+              onGoogleApiLoaded={(map) => console.log('Google map: ', map)}
               onBoundsChange={this.handleBoundsChange}
             >
               {

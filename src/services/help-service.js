@@ -1,5 +1,6 @@
 import BaseService from "./base-service";
 import axios from "axios";
+import userService from "./user-service";
 
 class HelpService extends BaseService {
 
@@ -20,6 +21,9 @@ class HelpService extends BaseService {
       if (error.response.status === 422) {
         return error.response;
       }
+      if (error.response.status == 401) {
+        userService.logout();
+      }
       throw new Error(error.response)
     }
   }
@@ -38,6 +42,9 @@ class HelpService extends BaseService {
         return response.data;
       } 
     } catch (error) {
+      if (error.response.status == 401) {
+        userService.logout();
+      }
       console.log(error.response)
     }
   }
@@ -58,6 +65,9 @@ class HelpService extends BaseService {
         return response.data;
       } 
     } catch (error) {
+      if (error.response.status == 401) {
+        userService.logout();
+      }
       console.log(error.response)
     }
   }
@@ -76,6 +86,9 @@ class HelpService extends BaseService {
         return response.data;
       } 
     } catch (error) {
+      if (error.response.status == 401) {
+        userService.logout();
+      }
       console.log(error.response)
     }
   }
@@ -94,6 +107,9 @@ class HelpService extends BaseService {
         return response.data;
       } 
     } catch (error) {
+      if (error.response.status == 401) {
+        userService.logout();
+      }
       console.log(error.response)
     }
   }
@@ -113,6 +129,9 @@ class HelpService extends BaseService {
         throw new Error('Something happened')
       }
     } catch (error) {
+      if (error.response.status == 401) {
+        userService.logout();
+      }
       console.log(error.response)
       return [];
     }
@@ -134,6 +153,9 @@ class HelpService extends BaseService {
     } catch (error) {
       if (error.response.status === 422) {
         return error.response;
+      }
+      if (error.response.status == 401) {
+        userService.logout();
       }
       throw new Error(error.response)
     }
